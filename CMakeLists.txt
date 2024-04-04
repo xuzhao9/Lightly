@@ -1,15 +1,17 @@
-cmake_minimum_required(VERSION 3.0)
-project(lightly)
-set(PROJECT_VERSION "0.43")
-set(PROJECT_VERSION_MAJOR 5)
+cmake_minimum_required(VERSION 3.20)
 
-set(KF5_MIN_VERSION "5.78.0")
+project(lightly)
+set(PROJECT_VERSION "0.44")
+set(PROJECT_VERSION_MAJOR 6)
+
+set(KF6_MIN_VERSION "6.0.0")
+set(QT_MIN_VERSION "6.4.0")
 
 include(GenerateExportHeader)
 include(WriteBasicConfigVersionFile)
 include(FeatureSummary)
 
-find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
+find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} ${CMAKE_SOURCE_DIR}/cmake)
 
 include(ECMInstallIcons)

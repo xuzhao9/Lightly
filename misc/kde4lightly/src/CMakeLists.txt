@@ -9,7 +9,7 @@ set(kde4lightly_SRCS
 add_executable(kde4lightly ${kde4lightly_SRCS})
 
 # Select which libraries we need to link to
-target_link_libraries(kde4lightly Qt5::Widgets KF5::CoreAddons KF5::ConfigCore)
+target_link_libraries(kde4lightly Qt6::Widgets KF6::CoreAddons KF6::ConfigCore)
 
 # Tell cmake to install the application binary
 install(TARGETS kde4lightly DESTINATION ${LIB_INSTALL_DIR}/kconf_update_bin/)

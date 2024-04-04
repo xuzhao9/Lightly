@@ -6,8 +6,8 @@ include(KDEInstallDirs)
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
 
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
-find_package(KF5 REQUIRED COMPONENTS CoreAddons Config)
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(KF6 REQUIRED COMPONENTS CoreAddons Config)
 
 include(ECMPackageConfigHelpers)
 include(ECMMarkNonGuiExecutable)

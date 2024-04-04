@@ -1,13 +1,12 @@
 add_definitions(-DTRANSLATION_DOMAIN="lightly_kwin_deco")
 
-find_package(KF5 REQUIRED COMPONENTS CoreAddons GuiAddons ConfigWidgets WindowSystem I18n IconThemes)
-find_package(Qt5 CONFIG REQUIRED COMPONENTS DBus)
+find_package(KF6 REQUIRED COMPONENTS CoreAddons GuiAddons ConfigWidgets WindowSystem I18n IconThemes)
+find_package(Qt6 CONFIG REQUIRED COMPONENTS DBus)
 
 ### XCB
 find_package(XCB COMPONENTS XCB)
 set_package_properties(XCB PROPERTIES
   DESCRIPTION "X protocol C-language Binding"
-  URL "https://xcb.freedesktop.org"
   TYPE OPTIONAL
   PURPOSE "Required to pass style properties to native Windows on X11 Platform"
 )
@@ -15,9 +14,6 @@ set_package_properties(XCB PROPERTIES
 if(UNIX AND NOT APPLE)
 
   set(LIGHTLY_HAVE_X11 ${XCB_XCB_FOUND})
-  if (XCB_XCB_FOUND)
-    find_package(Qt5 REQUIRED CONFIG COMPONENTS X11Extras)
-  endif()
 
 else()
 
@@ -71,24 +67,24 @@ add_library(lightlydecoration MODULE
 
 target_link_libraries(lightlydecoration
     PUBLIC
-        Qt5::Core
-        Qt5::Gui
-        Qt5::DBus
+        Qt6::Core
+        Qt6::Gui
+        Qt6::DBus
     PRIVATE
         lightlycommon5
         KDecoration2::KDecoration
-        KF5::ConfigCore
-        KF5::CoreAddons
-        KF5::ConfigWidgets
-        KF5::GuiAddons
-        KF5::I18n
-        KF5::IconThemes
-        KF5::WindowSystem)
+        KF6::ConfigCore
+        KF6::CoreAddons
+        KF6::ConfigWidgets
+        KF6::GuiAddons
+        KF6::I18n
+        KF6::IconThemes
+        KF6::WindowSystem)
 
 if(LIGHTLY_HAVE_X11)
   target_link_libraries(lightlydecoration
     PUBLIC
-      Qt5::X11Extras
+      Qt6::X11Extras
       XCB::XCB)
 endif()
 
