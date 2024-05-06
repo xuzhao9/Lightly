@@ -25,10 +25,11 @@
 // IN THE SOFTWARE.
 //////////////////////////////////////////////////////////////////////////////
 
-#include "ui_lightlyconfigurationui.h"
+#include "lightly.h"
 #include "lightlyexceptionlistwidget.h"
 #include "lightlysettings.h"
-#include "lightly.h"
+#include "ui_lightlyconfigurationui.h"
+
 
 #include <KCModule>
 #include <KSharedConfig>

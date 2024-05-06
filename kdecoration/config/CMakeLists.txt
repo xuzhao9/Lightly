@@ -1,5 +1,6 @@
 ### config classes
 ### they are kept separately because they might move in a separate library in the future
+find_package(KF6KCMUtils)
 
 set(lightlydecoration_config_SRCS
     lightlyconfigwidget.cpp
@@ -9,15 +10,12 @@ set(lightlydecoration_config_SRCS
     lightlyexceptionmodel.cpp
     lightlyitemmodel.cpp
 )
-
-set(lightlydecoration_config_PART_FORMS
-   ui/lightlyconfigurationui.ui
-   ui/lightlydetectwidget.ui
-   ui/lightlyexceptiondialog.ui
-   ui/lightlyexceptionlistwidget.ui
+ki18n_wrap_ui(lightlydecoration_config_SRCS
+    ui/lightlyconfigurationui.ui
+    ui/lightlydetectwidget.ui
+    ui/lightlyexceptiondialog.ui
+    ui/lightlyexceptionlistwidget.ui
 )
-find_package(KF6KCMUtils)
-ki18n_wrap_ui(lightlydecoration_config_SRCS ${lightlydecoration_config_PART_FORMS})
 
 kcoreaddons_add_plugin(kcm_lightlydecoration SOURCES kcm_lightlydecoration.cpp ${lightlydecoration_config_SRCS} INSTALL_NAMESPACE "${KDECORATION_KCM_PLUGIN_DIR}")
 kconfig_add_kcfg_files(kcm_lightlydecoration ../lightlysettings.kcfgc)
