@@ -78,7 +78,7 @@ namespace Lightly
 
         // rewrite current exceptions
         int index = 0;
-        foreach( const InternalSettingsPtr& exception, _exceptions )
+        for( const InternalSettingsPtr& exception : std::as_const(_exceptions))
         {
 
             writeConfig( exception.data(), config.data(), exceptionGroupName( index ) );
@@ -90,17 +90,24 @@ namespace Lightly
 
     //_______________________________________________________________________
     QString ExceptionList::exceptionGroupName( int index )
-    { return QString( "Windeco Exception %1" ).arg( index ); }
+    { return QStringLiteral( "Windeco Exception %1" ).arg( index ); }
 
     //______________________________________________________________
     void ExceptionList::writeConfig( KCoreConfigSkeleton* skeleton, KConfig* config, const QString& groupName )
     {
 
         // list of items to be written
-        QStringList keys = { "Enabled", "ExceptionPattern", "ExceptionType", "HideTitleBar", "Mask", "BorderSize"};
+        const QStringList keys = {
+            QStringLiteral("Enabled"),
+            QStringLiteral("ExceptionPattern"),
+            QStringLiteral("ExceptionType"),
+            QStringLiteral("HideTitleBar"),
+            QStringLiteral("Mask"),
+            QStringLiteral("BorderSize")
+        };
 
         // write all items
-        foreach( auto key, keys )
+        for( auto key : keys )
         {
             KConfigSkeletonItem* item( skeleton->findItem( key ) );
             if( !item ) continue;
@@ -116,8 +123,8 @@ namespace Lightly
     //______________________________________________________________
     void ExceptionList::readConfig( KCoreConfigSkeleton* skeleton, KConfig* config, const QString& groupName )
     {
-
-        foreach( KConfigSkeletonItem* item, skeleton->items() )
+        const auto items = skeleton->items();
+        for(KConfigSkeletonItem* item : items)
         {
             if( !groupName.isEmpty() ) item->setGroup( groupName );
             item->readConfig( config );
