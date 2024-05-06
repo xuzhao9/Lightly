@@ -42,11 +42,11 @@ ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX LIGHTLY
 # create a Config.cmake and a ConfigVersion.cmake file and install them
 set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/Lightly")
 
-ecm_configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/LightlyConfig.cmake.in"
-                                  "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfig.cmake"
-                                  PATH_VARS KDE_INSTALL_FULL_DATADIR
-                                  INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
-                                  )
+include(CMakePackageConfigHelpers)
+configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/LightlyConfig.cmake.in"
+                              "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfig.cmake"
+	                      PATH_VARS KDE_INSTALL_FULL_DATADIR
+                              INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR})
 
 # add clang-format target for all our real source files
 file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h)

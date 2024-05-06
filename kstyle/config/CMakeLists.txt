@@ -15,8 +15,8 @@ add_library(kstyle_lightly_config MODULE
 
 target_link_libraries(kstyle_lightly_config Qt6::Core Qt6::Gui Qt6::Widgets Qt6::DBus)
 target_link_libraries(kstyle_lightly_config KF6::ConfigCore KF6::ConfigWidgets KF6::I18n)
-install(TARGETS kstyle_lightly_config DESTINATION ${QT_PLUGIN_INSTALL_DIR})
-install(FILES lightlystyleconfig.desktop DESTINATION  ${SERVICES_INSTALL_DIR})
+# install(TARGETS kstyle_lightly_config DESTINATION ${QTPLUGINDIR})
+# install(FILES lightlystyleconfig.desktop DESTINATION  ${SERVICES_INSTALL_DIR})
 
 ########### next target ###############
 find_package(KF6KCMUtils CONFIG)
@@ -26,7 +26,7 @@ set_package_properties(KF6KCMUtils PROPERTIES
     TYPE OPTIONAL
     PURPOSE "Required for lightly-settings6 application to build")
 
-if( KF5KCMUtils_FOUND )
+if( KF6KCMUtils_FOUND )
     set(lightly_settings_SOURCES main.cpp)
     add_executable(lightly-settings6 ${lightly_settings_SOURCES} )
     target_link_libraries(lightly-settings6 Qt6::Core Qt6::Gui Qt6::Widgets )
@@ -36,6 +36,6 @@ if( KF5KCMUtils_FOUND )
 
     # icon
     ecm_install_icons(ICONS sc-apps-lightly-settings.svgz
-        DESTINATION ${ICON_INSTALL_DIR}
+	DESTINATION ${KDE_INSTALL_ICONDIR}
         THEME hicolor )
 endif()

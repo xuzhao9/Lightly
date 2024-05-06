@@ -23,7 +23,7 @@ set(LIGHTLY_HAVE_KSTYLE ${KF6FrameworkIntegration_FOUND})
 find_package(XCB COMPONENTS XCB)
 set_package_properties(XCB PROPERTIES
     DESCRIPTION "X protocol C-language Binding"
-    URL "https://xcb.freedesktop.org"
+    URL "https://xcb.freedesktop.org/"
     TYPE OPTIONAL
     PURPOSE "Required to pass style properties to native Windows on X11 Platform"
 )
@@ -114,11 +114,10 @@ endif()
 
 if(LIGHTLY_HAVE_X11)
     target_link_libraries(lightly ${XCB_LIBRARIES})
-    target_link_libraries(lightly Qt6::X11Extras)
 endif()
 
 if(LIGHTLY_HAVE_KWAYLAND)
-    target_link_libraries(lightly KF6::WaylandClient)
+    target_link_libraries(lightly KWaylandClient)
 endif()
 
 

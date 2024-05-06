@@ -1,0 +1,11 @@
+{
+    "KPlugin": {
+        "Description": "Modify the appearance of window decorations",
+        "ServiceTypes": [
+            "KCModule"
+        ]
+    },
+    "X-KDE-Keywords": "lightly,decoration",
+    "X-KDE-ParentApp": "kcontrol",
+    "X-KDE-Weight": 60
+}

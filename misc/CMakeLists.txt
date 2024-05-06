@@ -1,1 +1,1 @@
-add_subdirectory(kde4lightly)
+# add_subdirectory(kde4lightly)
