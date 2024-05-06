@@ -36,6 +36,7 @@ target_link_libraries(lightlydecoration
     PRIVATE
         lightlycommon6
         Qt6::DBus
+        Qt6::Widgets
         KF6::CoreAddons
         KF6::ConfigGui
         KF6::GuiAddons

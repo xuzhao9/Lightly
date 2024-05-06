@@ -235,7 +235,7 @@ namespace Lightly
     }
 
     //________________________________________________________________
-    void Decoration::init()
+    bool Decoration::init()
     {
         auto c = client().data();
 
@@ -290,6 +290,8 @@ namespace Lightly
 
         createButtons();
         createShadow();
+
+        return true;
     }
 
     //________________________________________________________________
