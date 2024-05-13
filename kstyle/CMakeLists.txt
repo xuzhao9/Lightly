@@ -93,7 +93,9 @@ set(lightly_PART_SRCS
     lightlywindowmanager.cpp
 )
 
+# Bring back QString(char *)
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
+remove_definitions(-DQT_NO_KEYWORDS)
 
 kconfig_add_kcfg_files(lightly_PART_SRCS lightlystyleconfigdata.kcfgc)
 add_library(lightly MODULE ${lightly_PART_SRCS})
@@ -119,7 +121,7 @@ if(LIGHTLY_HAVE_X11)
 endif()
 
 if(LIGHTLY_HAVE_KWAYLAND)
-    target_link_libraries(lightly KWaylandClient)
+    target_link_libraries(lightly Plasma::KWaylandClient)
 endif()
 
 

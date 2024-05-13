@@ -1,0 +1,13 @@
+{
+    "KPlugin": {
+        "Description": "Modify the appearance of widgets",
+		"Icon": "preferences-desktop-theme",
+        "Name": "Lightly Widget Style",
+		"ServiceTypes": [
+            "KCModule"
+        ]
+	},
+	"X-KDE-Keywords": "breeze,widget,style",
+    "X-KDE-ParentApp": "kcontrol",
+    "X-KDE-Weight": 50
+}
