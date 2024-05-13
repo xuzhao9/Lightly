@@ -14,13 +14,22 @@ include(FeatureSummary)
 find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} ${CMAKE_SOURCE_DIR}/cmake)
 
+include(CMakePackageConfigHelpers)
 include(ECMInstallIcons)
-include(KDEInstallDirs)
+include(KDEInstallDirs6)
 include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 include(KDEClangFormat)
 
 include(GtkUpdateIconCache)
+
+
+find_package(KF6FrameworkIntegration ${KF6_MIN_VERSION} CONFIG )
+set_package_properties(KF${QT_MAJOR_VERSION}FrameworkIntegration PROPERTIES
+    DESCRIPTION "KF6 Framework Integration"
+    URL "https://projects.kde.org/projects/frameworks/frameworkintegration"
+    TYPE OPTIONAL
+    PURPOSE "Required to use KStyle convenience functionalities in style")
 
 option(WITH_DECORATIONS "Build Lightly window decorations for KWin" ON)
 if(WITH_DECORATIONS)
@@ -37,12 +46,11 @@ add_subdirectory(misc)
 include(ECMSetupVersion)
 ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX LIGHTLY
                   PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfigVersion.cmake"
-                  )
+)
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them
 set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/Lightly")
 
-include(CMakePackageConfigHelpers)
 configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/LightlyConfig.cmake.in"
                               "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfig.cmake"
 	                      PATH_VARS KDE_INSTALL_FULL_DATADIR
@@ -56,6 +64,6 @@ install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfig.cmake"
                "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfigVersion.cmake"
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
         COMPONENT Devel
-        )
+)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
