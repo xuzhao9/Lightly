@@ -90,21 +90,14 @@ namespace Lightly
 
     //_______________________________________________________________________
     QString ExceptionList::exceptionGroupName( int index )
-    { return QStringLiteral( "Windeco Exception %1" ).arg( index ); }
+    { return QString( "Windeco Exception %1" ).arg( index ); }
 
     //______________________________________________________________
     void ExceptionList::writeConfig( KCoreConfigSkeleton* skeleton, KConfig* config, const QString& groupName )
     {
 
         // list of items to be written
-        const QStringList keys = {
-            QStringLiteral("Enabled"),
-            QStringLiteral("ExceptionPattern"),
-            QStringLiteral("ExceptionType"),
-            QStringLiteral("HideTitleBar"),
-            QStringLiteral("Mask"),
-            QStringLiteral("BorderSize")
-        };
+        const QStringList keys = { "Enabled", "ExceptionPattern", "ExceptionType", "HideTitleBar", "Mask", "BorderSize"};
 
         // write all items
         for( auto key : keys )
