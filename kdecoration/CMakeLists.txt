@@ -21,6 +21,9 @@ set(lightlydecoration_SRCS
     lightlysettingsprovider.cpp
     lightlysizegrip.cpp)
 
+# Bring back QString(char *)
+remove_definitions(-DQT_NO_CAST_FROM_ASCII)
+remove_definitions(-DQT_NO_KEYWORDS)
 
 ### build library
 kconfig_add_kcfg_files(lightlydecoration_SRCS lightlysettings.kcfgc)

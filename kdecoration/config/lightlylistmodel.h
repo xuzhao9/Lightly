@@ -27,7 +27,6 @@
 
 #include "lightlyitemmodel.h"
 
-#include <QtCore/QtCore>
 #include <QSet>
 #include <QList>
 

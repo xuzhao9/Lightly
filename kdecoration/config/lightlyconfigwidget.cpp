@@ -36,7 +36,7 @@ namespace Lightly
 {
 
 //_________________________________________________________
-ConfigWidget::ConfigWidget( QObject* parent, const KPluginMetaData &data, const QVariantList &args ):
+ConfigWidget::ConfigWidget( QObject* parent, const KPluginMetaData &data, const QVariantList & /*args*/ ):
         KCModule(parent, data),
         m_configuration( KSharedConfig::openConfig( QStringLiteral( "lightlyrc" ) ) ),
         m_changed( false )

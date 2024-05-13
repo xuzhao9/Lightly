@@ -18,9 +18,6 @@ ki18n_wrap_ui(lightlydecoration_config_SRCS
     ui/lightlyexceptionlistwidget.ui
 )
 
-# Bring back QString(char *)
-remove_definitions(-DQT_NO_CAST_FROM_ASCII)
-remove_definitions(-DQT_NO_KEYWORDS)
 
 kcoreaddons_add_plugin(kcm_lightlydecoration SOURCES kcm_lightlydecoration.cpp ${lightlydecoration_config_SRCS} INSTALL_NAMESPACE "${KDECORATION_KCM_PLUGIN_DIR}")
 kconfig_add_kcfg_files(kcm_lightlydecoration ../lightlysettings.kcfgc)

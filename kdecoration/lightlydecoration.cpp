@@ -25,7 +25,6 @@
 #include "lightly.h"
 #include "lightlysettingsprovider.h"
 #include "config-lightly.h"
-// #include "config/lightlyconfigwidget.h"
 
 #include "lightlybutton.h"
 #include "lightlysizegrip.h"
