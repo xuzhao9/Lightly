@@ -3,6 +3,7 @@
 find_package(KF6KCMUtils)
 
 set(lightlydecoration_config_SRCS
+    ../lightlyexceptionlist.cpp
     lightlyconfigwidget.cpp
     lightlydetectwidget.cpp
     lightlyexceptiondialog.cpp
