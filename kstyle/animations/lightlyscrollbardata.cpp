@@ -141,14 +141,14 @@ namespace Lightly
 
         // cast event
         QHoverEvent *hoverEvent = static_cast<QHoverEvent*>(event);
-        QStyle::SubControl hoverControl = scrollBar->style()->hitTestComplexControl(QStyle::CC_ScrollBar, &opt, hoverEvent->pos(), scrollBar);
+        QStyle::SubControl hoverControl = scrollBar->style()->hitTestComplexControl(QStyle::CC_ScrollBar, &opt, hoverEvent->position().toPoint(), scrollBar);
 
         // update hover state
         updateAddLineArrow( hoverControl );
         updateSubLineArrow( hoverControl );
 
         // store position
-        _position = hoverEvent->pos();
+        _position = hoverEvent->position().toPoint();
 
     }
 

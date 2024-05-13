@@ -93,6 +93,8 @@ set(lightly_PART_SRCS
     lightlywindowmanager.cpp
 )
 
+remove_definitions(-DQT_NO_CAST_FROM_ASCII)
+
 kconfig_add_kcfg_files(lightly_PART_SRCS lightlystyleconfigdata.kcfgc)
 add_library(lightly MODULE ${lightly_PART_SRCS})
 target_link_libraries(lightly Qt6::Core Qt6::Gui Qt6::Widgets Qt6::DBus)
@@ -119,6 +121,7 @@ endif()
 if(LIGHTLY_HAVE_KWAYLAND)
     target_link_libraries(lightly KWaylandClient)
 endif()
+
 
 
 ########### install files ###############

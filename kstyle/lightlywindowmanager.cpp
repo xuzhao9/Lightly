@@ -84,7 +84,7 @@
 #include <QQuickWindow>
 #endif
 
-#if LIGHTLY_HAVE_X11
+#if 0
 #include <QX11Info>
 #include <xcb/xcb.h>
 

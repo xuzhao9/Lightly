@@ -71,7 +71,7 @@ namespace Lightly
         QHoverEvent *hoverEvent = static_cast<QHoverEvent*>(event);
 
         // store position
-        _position = hoverEvent->pos();
+        _position = hoverEvent->position().toPoint();
 
         // trigger animation if position match handle rect
         updateState( _handleRect.contains( _position ) );
