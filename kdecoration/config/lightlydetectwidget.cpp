@@ -81,14 +81,14 @@ namespace Lightly
 
         if( window == 0 )
         {
-            emit detectionDone( false );
+            Q_EMIT detectionDone( false );
             return;
         }
 
         m_info.reset(new KWindowInfo( window, NET::WMAllProperties, NET::WM2AllProperties ));
         if( !m_info->valid())
         {
-            emit detectionDone( false );
+            Q_EMIT detectionDone( false );
             return;
         }
 
@@ -97,7 +97,7 @@ namespace Lightly
 
         m_ui.windowClass->setText( QStringLiteral( "%1 (%2 %3)" ).arg( wmClassClass ).arg( wmClassName ).arg( wmClassClass ) );
         m_ui.windowTitle->setText( m_info->name() );
-        emit detectionDone( exec() == QDialog::Accepted );
+        Q_EMIT detectionDone( exec() == QDialog::Accepted );
 
     }
 

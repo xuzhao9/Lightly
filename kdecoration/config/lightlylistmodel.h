@@ -27,12 +27,11 @@
 
 #include "lightlyitemmodel.h"
 
+#include <QObject>
 #include <QSet>
 #include <QList>
 
 #include <algorithm>
-
-#define emit
 
 namespace Lightly
 {
