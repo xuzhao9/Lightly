@@ -36,14 +36,14 @@ namespace Lightly
 {
 
     //_________________________________________________________
-    ConfigWidget::ConfigWidget( QWidget* parent, const QVariantList &args ):
-        KCModule(parent, args),
+ConfigWidget::ConfigWidget( QObject* parent, const KPluginMetaData &data, const QVariantList &args ):
+        KCModule(parent, data),
         m_configuration( KSharedConfig::openConfig( QStringLiteral( "lightlyrc" ) ) ),
         m_changed( false )
     {
 
         // configuration
-        m_ui.setupUi( this );
+        m_ui.setupUi( widget() );
 
         // track ui changes
         connect( m_ui.titleAlignment, SIGNAL(currentIndexChanged(int)), SLOT(updateChanged()) );

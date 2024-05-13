@@ -31,6 +31,7 @@ target_link_libraries(kcm_lightlydecoration
         KF6::GuiAddons
         KF6::I18n
         KF6::IconThemes
+        KF6::WindowSystem
         KF6::KCMUtils
 )
 kcmutils_generate_desktop_file(kcm_lightlydecoration)

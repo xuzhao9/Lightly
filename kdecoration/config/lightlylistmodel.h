@@ -32,6 +32,8 @@
 
 #include <algorithm>
 
+#define emit
+
 namespace Lightly
 {
     //! Job model. Stores job information for display in lists
