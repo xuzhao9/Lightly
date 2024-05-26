@@ -90,7 +90,8 @@ namespace Lightly
         _enabled = value;
 
         // update all top level widgets
-        foreach( QWidget* widget, qApp->topLevelWidgets() )
+        const auto widgets = qApp->topLevelWidgets();
+        for (QWidget *widget : widgets)
         { widget->update(); }
 
     }

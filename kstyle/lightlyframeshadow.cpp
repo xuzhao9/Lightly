@@ -65,7 +65,7 @@ namespace Lightly
 
         // make sure that the widget is not embedded into a KHTMLView
         QWidget* parent( widget->parentWidget() );
-        while( parent && !parent->isTopLevel() )
+        while( parent && !parent->isWindow() )
         {
             if( parent->inherits( "KHTMLView" ) ) return false;
             parent = parent->parentWidget();
@@ -135,7 +135,7 @@ namespace Lightly
         widget->removeEventFilter( this );
 
         const QList<QObject* > children = widget->children();
-        foreach( QObject *child, children )
+        for(QObject *child : children)
         {
             if( FrameShadow* shadow = qobject_cast<FrameShadow*>(child) )
             {
@@ -152,7 +152,7 @@ namespace Lightly
     {
 
         const QList<QObject *> &children = object->children();
-        foreach( QObject *child, children )
+        for(QObject *child : children)
         {
             if( FrameShadow* shadow = qobject_cast<FrameShadow *>(child) )
             { shadow->updateGeometry( rect ); }
@@ -165,7 +165,7 @@ namespace Lightly
     {
 
         const QList<QObject *> &children = object->children();
-        foreach( QObject *child, children )
+        for(QObject *child : children)
         {
             if( FrameShadow* shadow = qobject_cast<FrameShadow *>(child) )
             { shadow->raise(); }
@@ -178,7 +178,7 @@ namespace Lightly
     {
 
         const QList<QObject* > &children = object->children();
-        foreach( QObject *child, children )
+        for(QObject *child : children)
         {
             if( FrameShadow* shadow = qobject_cast<FrameShadow *>(child) )
             { shadow->update();}
@@ -191,7 +191,7 @@ namespace Lightly
     {
 
         const QList<QObject *> &children = widget->children();
-        foreach( QObject *child, children )
+        for(QObject *child : children)
         {
             if( FrameShadow* shadow = qobject_cast<FrameShadow *>(child) )
             { shadow->updateState( focus, hover, opacity, mode ); }

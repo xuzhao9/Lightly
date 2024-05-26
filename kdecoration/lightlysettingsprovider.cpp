@@ -22,8 +22,7 @@
 
 #include "lightlyexceptionlist.h"
 
-#include <KWindowInfo>
-
+#include <QRegularExpression>
 #include <QTextStream>
 
 namespace Lightly
@@ -72,12 +71,12 @@ namespace Lightly
     {
 
         QString windowTitle;
-        QString className;
+        QString windowClass;
 
         // get the client
-        auto client = decoration->client().data();
+        const auto client = decoration->client();
 
-        foreach( auto internalSettings, m_exceptions )
+        for( auto internalSettings : std::as_const(m_exceptions) )
         {
 
             // discard disabled exceptions
@@ -102,24 +101,17 @@ namespace Lightly
                 default:
                 case InternalSettings::ExceptionWindowClassName:
                 {
-                    if( className.isEmpty() )
-                    {
-                        // retrieve class name
-                        KWindowInfo info( client->windowId(), nullptr, NET::WM2WindowClass );
-                        QString window_className( QString::fromUtf8(info.windowClassName()) );
-                        QString window_class( QString::fromUtf8(info.windowClassClass()) );
-                        className = window_className + QStringLiteral(" ") + window_class;
-                    }
-
-                    value = className;
+                    value = windowClass.isEmpty() ? (windowClass = client->windowClass()) : windowClass;
                     break;
                 }
 
             }
 
             // check matching
-            if( QRegExp( internalSettings->exceptionPattern() ).indexIn( value ) >= 0 )
-            { return internalSettings; }
+            QRegularExpression rx(internalSettings->exceptionPattern());
+            if (rx.match(value).hasMatch()) {
+                return internalSettings;
+            }
 
         }
 

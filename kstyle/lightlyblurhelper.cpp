@@ -358,7 +358,7 @@ namespace Lightly
         QRegion region = blurRegion(widget);
         if (region.isNull()) return;
 
-        KWindowEffects::enableBlurBehind(widget->isWindow() ? widget->winId() : widget->window()->winId(), true, region);
+        KWindowEffects::enableBlurBehind(widget->windowHandle(), true, region);
         //KWindowEffects::enableBackgroundContrast (widget->isWindow() ? widget->winId() : widget->window()->winId(), true, 1.0, 1.2, 1.3, region );
 
         // force update

@@ -1,6 +1,3 @@
-#ifndef lightlystyleconfigmodule_h
-#define lightlystyleconfigmodule_h
-
 /*************************************************************************
  * Copyright (C) 2014 by Hugo Pereira Da Costa <hugo.pereira@free.fr>    *
  *                                                                       *
@@ -28,27 +25,24 @@ namespace Lightly
 {
 
     //* configuration module
-    class ConfigurationModule: public KCModule
-    {
+class ConfigurationModule: public KCModule
+{
 
-        Q_OBJECT
+    Q_OBJECT
 
-        public:
-        ConfigurationModule(QWidget *parent, const QVariantList &args);
+public:
+    ConfigurationModule(QObject *parent, const KPluginMetaData &data);
 
-        public Q_SLOTS:
+public Q_SLOTS:
 
-        void defaults() override;
-        void load() override;
-        void save() override;
+    void defaults() override;
+    void load() override;
+    void save() override;
 
-        private:
+private:
+    //* configuration
+    StyleConfig* m_config;
 
-        //* configuration
-        StyleConfig* m_config;
-
-    };
+};
 
 }
-
-#endif

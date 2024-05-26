@@ -62,7 +62,7 @@ namespace Lightly
         updatePosition();
 
         // connections
-        auto c = decoration->client().data();
+        auto c = decoration->client();
         connect( c, &KDecoration2::DecoratedClient::widthChanged, this, &SizeGrip::updatePosition );
         connect( c, &KDecoration2::DecoratedClient::heightChanged, this, &SizeGrip::updatePosition );
         connect( c, &KDecoration2::DecoratedClient::activeChanged, this, &SizeGrip::updateActiveState );
@@ -99,7 +99,7 @@ namespace Lightly
         #if LIGHTLY_HAVE_X11
 
         if( !QX11Info::isPlatformX11() ) return;
-        auto c = m_decoration.data()->client().data();
+        auto c = m_decoration.data()->client();
 
         xcb_window_t windowId = c->windowId();
         if( windowId )
@@ -166,7 +166,7 @@ namespace Lightly
                 break;
             }
 
-            case Qt::MidButton:
+            case Qt::MiddleButton:
             {
                 hide();
                 break;

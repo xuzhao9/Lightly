@@ -42,11 +42,12 @@ int main(int argc, char *argv[])
 
     KCMultiDialog dialog;
     dialog.setWindowTitle( i18n( "Lightly Settings" ) );
-    dialog.addModule( QStringLiteral( "lightlystyleconfig" ) );
-    dialog.addModule( QStringLiteral( "lightlydecorationconfig" ) );
+    dialog.addModule( QStringLiteral( "kstyle_config/lightlystyleconfig" ) );
+    dialog.addModule( QStringLiteral( "org.kde.kdecoration2.kcm/kcm_lightlydecoration.so" ) );
     dialog.show();
 
-    foreach( auto child, dialog.findChildren<QAbstractScrollArea*>() )
+    const auto children = dialog.findChildren<QAbstractScrollArea *>();
+    for( auto child : children )
     {
         child->adjustSize();
         child->viewport()->adjustSize();

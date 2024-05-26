@@ -84,7 +84,7 @@
 #include <QQuickWindow>
 #endif
 
-#if LIGHTLY_HAVE_X11
+#if 0
 #include <QX11Info>
 #include <xcb/xcb.h>
 
@@ -316,8 +316,8 @@ namespace Lightly
             ExceptionId( QStringLiteral( "ViewSliders@kmix" ) ),
             ExceptionId( QStringLiteral( "Sidebar_Widget@konqueror" ) )
         });
-
-        foreach( const QString& exception, StyleConfigData::windowDragWhiteList() )
+        const auto windowDragWhiteList = StyleConfigData::windowDragWhiteList();
+        for (const QString &exception : windowDragWhiteList)
         {
             ExceptionId id( exception );
             if( !id.className().isEmpty() )
@@ -335,7 +335,8 @@ namespace Lightly
             ExceptionId( QStringLiteral( "KGameCanvasWidget" ) )
         });
 
-        foreach( const QString& exception, StyleConfigData::windowDragBlackList() )
+        const auto windowDragBlackList = StyleConfigData::windowDragBlackList();
+        for (const QString &exception : windowDragBlackList)
         {
             ExceptionId id( exception );
             if( !id.className().isEmpty() )
@@ -595,7 +596,7 @@ namespace Lightly
 
         // list-based blacklisted widgets
         const auto appName( qApp->applicationName() );
-        foreach( const ExceptionId& id, _blackList )
+        for (const ExceptionId &id : std::as_const(_blackList))
         {
             if( !id.appName().isEmpty() && id.appName() != appName ) continue;
             if( id.className() == QStringLiteral( "*" ) && !id.appName().isEmpty() )
@@ -616,7 +617,7 @@ namespace Lightly
     {
 
         const auto appName( qApp->applicationName() );
-        foreach( const ExceptionId& id, _whiteList )
+        for (const ExceptionId &id : std::as_const(_whiteList))
         {
             if( !(id.appName().isEmpty() || id.appName() == appName ) ) continue;
             if( widget->inherits( id.className().toLatin1().data() ) ) return true;
@@ -844,25 +845,8 @@ namespace Lightly
     //_______________________________________________________
     void WindowManager::startDragX11( QWindow* window, const QPoint& position )
     {
-        #if LIGHTLY_HAVE_X11
-        // connection
-        auto connection( QX11Info::connection() );
-
-        auto net_connection = connection;
-        const qreal dpiRatio = window->devicePixelRatio();
-        const QPoint origin = window->screen()->geometry().topLeft();
-        const QPoint native = (position - origin) * dpiRatio + origin;
-
-        xcb_ungrab_pointer( connection, XCB_TIME_CURRENT_TIME );
-        NETRootInfo( net_connection, NET::WMMoveResize ).moveResizeRequest(
-            window->winId(), native.x(), native.y(), NET::Move );
-
-        #else
-
         Q_UNUSED( window );
         Q_UNUSED( position );
-
-        #endif
     }
 
     //_______________________________________________________

@@ -155,7 +155,7 @@ namespace LightlyPrivate
 
     //_______________________________________________________________
     bool isProgressBarHorizontal( const QStyleOptionProgressBar* option )
-    {  return option && ( (option->state & QStyle::State_Horizontal ) || option->orientation == Qt::Horizontal ); }
+    {  return option && (option->state & QStyle::State_Horizontal); }
     
     //* list of possible valid toolbars to be translucent
     //* only one can be at time
@@ -538,8 +538,8 @@ namespace Lightly
         // change viewport autoFill background.
         // do the same for all children if the background role is QPalette::Window
         viewport->setAutoFillBackground( false );
-        QList<QWidget*> children( viewport->findChildren<QWidget*>() );
-        foreach( QWidget* child, children )
+        const QList<QWidget*> children( viewport->findChildren<QWidget*>() );
+        for (QWidget *child : children)
         {
             if( child->parent() == viewport && child->backgroundRole() == QPalette::Window )
             { child->setAutoFillBackground( false ); }
@@ -1004,7 +1004,7 @@ namespace Lightly
             case PE_IndicatorToolBarHandle: fcn = &Style::drawIndicatorToolBarHandlePrimitive; break;
             case PE_IndicatorToolBarSeparator: fcn = &Style::drawIndicatorToolBarSeparatorPrimitive; break;
             case PE_IndicatorBranch: fcn = &Style::drawIndicatorBranchPrimitive; break;
-            case PE_FrameStatusBar: fcn = &Style::emptyPrimitive; break;
+            case PE_FrameStatusBarItem: fcn = &Style::emptyPrimitive; break;
             case PE_Frame: fcn = &Style::drawFramePrimitive; break;
             case PE_FrameLineEdit: fcn = &Style::drawFrameLineEditPrimitive; break;
             case PE_FrameMenu: fcn = &Style::drawFrameMenuPrimitive; break;
@@ -1339,7 +1339,7 @@ namespace Lightly
                 painter.setBrush( background );
 
                 // render
-                //foreach( auto* child, children )
+                //for( auto* child : children )
                 //{ painter.drawRect( child->geometry() ); }
 
             }
@@ -1371,7 +1371,7 @@ namespace Lightly
                 }
 
                 // loop over found scrollbars
-                foreach( QScrollBar* scrollBar, scrollBars )
+                for (QScrollBar *scrollBar : std::as_const(scrollBars))
                 {
 
                     if( !( scrollBar && scrollBar->isVisible() ) ) continue;
@@ -1471,7 +1471,7 @@ namespace Lightly
             {
                 _helper->renderMenuFrame( &painter, rect, background, outline, false );
 
-            } else if( StyleConfigData::dockWidgetDrawFrame() || (dockWidget->features()&QDockWidget::AllDockWidgetFeatures) ) {
+            } else if( StyleConfigData::dockWidgetDrawFrame() ||  qobject_cast<const QDockWidget *>(dockWidget) ) {
     
                 _helper->renderFrame( &painter, rect, background, palette, windowActive );
 
@@ -3248,7 +3248,7 @@ namespace Lightly
         QTabBar* tabBar = nullptr;
         QStackedWidget* stack = nullptr;
         auto children( widget->children() );
-        foreach( auto child, children )
+        for ( auto child : children )
         {
             if( !tabBar ) tabBar = qobject_cast<QTabBar*>( child );
             if( !stack ) stack = qobject_cast<QStackedWidget*>( child );
@@ -7271,7 +7271,7 @@ namespace Lightly
 
                     // calculate positions and draw lines
                     int position( sliderPositionFromValue( sliderOption->minimum, sliderOption->maximum, current, available ) + fudge );
-                    foreach( const QLine& tickLine, tickLines )
+                    for (const QLine &tickLine : std::as_const(tickLines))
                     {
                         if( horizontal ) painter->drawLine( tickLine.translated( upsideDown ? (rect.width() - position) : position, 0 ) );
                         else painter->drawLine( tickLine.translated( 0, upsideDown ? (rect.height() - position):position ) );
@@ -7555,7 +7555,7 @@ namespace Lightly
         };
 
         // loop over supported buttons
-        foreach( const SubControl& subControl, subControls )
+        for( const SubControl& subControl : subControls )
         {
 
             // skip if not requested
@@ -7906,10 +7906,9 @@ namespace Lightly
 
         // create icon and fill
         QIcon icon;
-        foreach( const IconData& iconData, iconTypes )
+        for( const IconData& iconData : iconTypes )
         {
-
-            foreach( const int& iconSize, iconSizes )
+            for( const int& iconSize : iconSizes )
             {
 
                 // create pixmap
@@ -8008,10 +8007,10 @@ namespace Lightly
         // output icon
         QIcon icon;
 
-        foreach( const IconData& iconData, iconTypes )
+        for( const IconData& iconData : iconTypes )
         {
 
-            foreach( const int& iconSize, iconSizes )
+            for( const int& iconSize : iconSizes )
             {
                 // create pixmap
                 QPixmap pixmap( iconSize, iconSize );
@@ -8116,7 +8115,7 @@ namespace Lightly
         QWidget* parent = widget->parentWidget();
         if( qobject_cast<QMenu*>( parent ) )
         {
-            foreach( auto child, parent->findChildren<QWidgetAction*>() )
+            for( auto child : parent->findChildren<QWidgetAction*>() )
             {
                 if( child->defaultWidget() != widget ) continue;
                 const_cast<QWidget*>(widget)->setProperty( PropertyNames::menuTitle, true );

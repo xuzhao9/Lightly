@@ -3,11 +3,12 @@ find_package(ECM 0.0.13 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 include(KDEInstallDirs)
+include(KDEInstallDirsCommon)
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
 
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
-find_package(KF5 REQUIRED COMPONENTS CoreAddons Config)
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(KF6 REQUIRED COMPONENTS CoreAddons Config)
 
 include(ECMPackageConfigHelpers)
 include(ECMMarkNonGuiExecutable)

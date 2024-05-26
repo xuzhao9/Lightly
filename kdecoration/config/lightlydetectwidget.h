@@ -40,6 +40,7 @@
 #include <QLabel>
 
 #include <kwindowsystem.h>
+#include <kwindowinfo.h>
 
 namespace Lightly
 {

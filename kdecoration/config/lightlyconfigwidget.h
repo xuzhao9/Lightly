@@ -25,16 +25,17 @@
 // IN THE SOFTWARE.
 //////////////////////////////////////////////////////////////////////////////
 
-#include "ui_lightlyconfigurationui.h"
+#include "lightly.h"
 #include "lightlyexceptionlistwidget.h"
 #include "lightlysettings.h"
-#include "lightly.h"
+#include "ui_lightlyconfigurationui.h"
+
 
 #include <KCModule>
 #include <KSharedConfig>
 
-#include <QWidget>
 #include <QSharedPointer>
+#include <QWidget>
 
 namespace Lightly
 {
@@ -48,7 +49,7 @@ namespace Lightly
         public:
 
         //* constructor
-        explicit ConfigWidget( QWidget*, const QVariantList& );
+        explicit ConfigWidget( QObject *parent, const KPluginMetaData &data, const QVariantList &args);
 
         //* destructor
         virtual ~ConfigWidget() = default;
