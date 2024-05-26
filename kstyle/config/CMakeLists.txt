@@ -14,6 +14,8 @@ kcoreaddons_add_plugin(lightlystyleconfig SOURCES
     INSTALL_NAMESPACE "kstyle_config"
 )
 
+target_link_libraries(lightlystyleconfig Qt6::Core Qt6::Gui Qt6::Widgets Qt6::DBus)
+
 find_package(KF6KCMUtils CONFIG)
 set_package_properties(KF6KCMUtils PROPERTIES
     DESCRIPTION "KF6 KCM utils Framework"
@@ -21,23 +23,20 @@ set_package_properties(KF6KCMUtils PROPERTIES
     TYPE OPTIONAL
     PURPOSE "Required for lightly-settings application to build")
 
-target_link_libraries(lightlystyleconfig Qt6::Core Qt6::Gui Qt6::Widgets Qt6::DBus)
 target_link_libraries(lightlystyleconfig KF6::CoreAddons KF6::ConfigCore KF6::ConfigWidgets KF6::I18n)
 target_link_libraries(lightlystyleconfig KF6::KCMUtils)
 kcmutils_generate_desktop_file(lightlystyleconfig)
 
-if( KF6KCMUtils_FOUND )
-    set(lightly_settings_SOURCES main.cpp)
-    add_executable(lightly-settings ${lightly_settings_SOURCES} )
-    target_link_libraries(lightly-settings Qt6::Core Qt6::Gui Qt6::Widgets )
-    target_link_libraries(lightly-settings KF6::I18n KF6::KCMUtils)
+set(lightly_settings_SOURCES main.cpp)
+add_executable(lightly-settings ${lightly_settings_SOURCES} )
+target_link_libraries(lightly-settings Qt6::Core Qt6::Gui Qt6::Widgets )
+target_link_libraries(lightly-settings KF6::I18n KF6::KCMUtils)
 
-    set_target_properties(lightly-settings PROPERTIES OUTPUT_NAME lightly-settings6)
+set_target_properties(lightly-settings PROPERTIES OUTPUT_NAME lightly-settings6)
 
-    install(TARGETS lightly-settings ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS lightly-settings ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
-    # icon
-    ecm_install_icons(ICONS sc-apps-lightly-settings.svgz
-	DESTINATION ${KDE_INSTALL_ICONDIR}
-        THEME hicolor )
-endif()
+# icon
+ecm_install_icons(ICONS sc-apps-lightly-settings.svgz
+  DESTINATION ${KDE_INSTALL_ICONDIR}
+  THEME hicolor )

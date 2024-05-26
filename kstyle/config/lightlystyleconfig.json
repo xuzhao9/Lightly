@@ -4,10 +4,10 @@
 		"Icon": "preferences-desktop-theme",
         "Name": "Lightly Widget Style",
 		"ServiceTypes": [
-            "KCModule"
+                    "KCModule"
         ]
 	},
-	"X-KDE-Keywords": "breeze,widget,style",
+    "X-KDE-Keywords": "lightly,widget,style",
     "X-KDE-ParentApp": "kcontrol",
     "X-KDE-Weight": 50
 }

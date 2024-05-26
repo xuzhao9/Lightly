@@ -97,12 +97,18 @@ set(lightly_PART_SRCS
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 remove_definitions(-DQT_NO_KEYWORDS)
 
+kconfig_add_kcfg_files(lightly_PART_SRCS ../kdecoration/lightlysettings.kcfgc)
 kconfig_add_kcfg_files(lightly_PART_SRCS lightlystyleconfigdata.kcfgc)
+
+
 add_library(lightly MODULE ${lightly_PART_SRCS})
+
 target_link_libraries(lightly Qt6::Core Qt6::Gui Qt6::Widgets Qt6::DBus)
+
 if( LIGHTLY_HAVE_QTQUICK )
     target_link_libraries(lightly Qt6::Quick)
 endif()
+
 target_link_libraries(lightly KF6::ConfigCore KF6::ConfigWidgets KF6::GuiAddons KF6::IconThemes KF6::WindowSystem)
 target_link_libraries(lightly lightlycommon6)
 
@@ -125,10 +131,9 @@ if(LIGHTLY_HAVE_KWAYLAND)
 endif()
 
 
-
 ########### install files ###############
-install(TARGETS lightly DESTINATION ${QT_PLUGIN_INSTALL_DIR}/styles/)
-install(FILES lightly.themerc  DESTINATION  ${DATA_INSTALL_DIR}/kstyle/themes)
+install(TARGETS lightly DESTINATION ${KDE_INSTALL_QTPLUGINDIR}/styles/)
+install(FILES lightly.themerc  DESTINATION  ${KDE_INSTALL_DATADIR}/kstyle/themes)
 
 ########### subdirectories ###############
 add_subdirectory(config)

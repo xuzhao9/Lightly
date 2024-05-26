@@ -25,45 +25,45 @@
 namespace Lightly
 {
 
-    class StyleConfig: public QWidget, Ui::LightlyStyleConfig
-    {
+class StyleConfig: public QWidget, Ui::LightlyStyleConfig
+{
 
-        Q_OBJECT
+    Q_OBJECT
 
-        public:
+public:
 
-        //* constructor
-        explicit StyleConfig(QWidget*);
+    //* constructor
+    explicit StyleConfig(QWidget*);
 
-        //* destructor
-        virtual ~StyleConfig()
-        {}
+    //* destructor
+    virtual ~StyleConfig()
+    {}
 
-        Q_SIGNALS:
+Q_SIGNALS:
 
-        //* emitted whenever one option is changed.
-        void changed(bool);
+    //* emitted whenever one option is changed.
+    void changed(bool);
 
-        public Q_SLOTS:
+public Q_SLOTS:
 
-        //* load setup from config data
-        void load();
+    //* load setup from config data
+    void load();
 
-        //* save current state
-        void save();
+    //* save current state
+    void save();
 
-        //* restore all default values
-        void defaults();
+    //* restore all default values
+    void defaults();
 
-        //* reset to saved configuration
-        void reset();
+    //* reset to saved configuration
+    void reset();
 
-        protected Q_SLOTS:
+protected Q_SLOTS:
 
-        //* update modified state when option is checked/unchecked
-        void updateChanged();
+    //* update modified state when option is checked/unchecked
+    void updateChanged();
 
-    };
+};
 
 }
 #endif
