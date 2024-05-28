@@ -1,0 +1,19 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "i@xuzhao.net",
+                "Name": "Xu Zhao"
+            }
+        ],
+        "Category": "",
+        "Description": "Lightly Plasma Theme",
+        "EnabledByDefault": true,
+        "Id": "lightly",
+        "License": "GPLv3",
+        "Name": "Lightly",
+        "Version": "6.0.0",
+        "Website": "https://github.com/xuzhao9/Lightly"
+    },
+    "X-Plasma-API": "5.0"
+}

@@ -1,0 +1,14 @@
+# Adding some contrast to what is behind windows, panels or tooltips (disabled by default)
+[ContrastEffect]
+contrast=1.2
+enabled=true
+intensity=1
+saturation=1
+
+# Blurring what is behind windows, panels or tool tips. This is enabled by default.
+[BlurBehindEffect]
+enabled=true
+
+[AdaptiveTransparency]
+enabled=true
+ 
