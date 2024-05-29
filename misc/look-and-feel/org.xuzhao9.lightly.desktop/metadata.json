@@ -1,0 +1,19 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "i@xuzhao.net",
+                "Name": "Xu Zhao"
+            }
+        ],
+        "Category": "",
+        "Description": "Lightly by xuzhao9",
+        "Id": "org.xuzhao9.lightly",
+        "License": "GPLv2+",
+        "Name": "Lightly",
+        "Website": "https://www.kde.org"
+    },
+    "Keywords": "Desktop;Workspace;Appearance;Look and Feel;Logout;Lock;Suspend;Shutdown;Hibernate;",
+    "X-Plasma-APIVersion": "2"
+}
