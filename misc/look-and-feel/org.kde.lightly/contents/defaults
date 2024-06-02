@@ -17,7 +17,5 @@ Image=Next
 cursorTheme=breeze_cursors
 
 [kwinrc][org.kde.kdecoration2]
-library=org.xuzhao9.Lightly
+library=org.kde.Lightly
 
-[KSplash]
-Theme=org.kde.Breeze
