@@ -1,5 +1,7 @@
 {
     "KPlugin": {
+        "Name": "Lightly Window Decoration",
+        "Icon": "preferences-system-windows",
         "Description": "Modify the appearance of window decorations",
         "ServiceTypes": [
             "KCModule"
