@@ -7,7 +7,7 @@
             "org.kde.kdecoration2"
         ]
     },
-    "X-KDE-ConfigModule": "kcm_breezedecoration",
+    "X-KDE-ConfigModule": "kcm_lightlydecoration",
     "org.kde.kdecoration2": {
         "blur": true,
         "recommendedBorderSize": "None"
