@@ -1,15 +1,15 @@
 {
     "KPlugin": {
+        "Description": "Lightly Window decoration",
         "EnabledByDefault": true,
-        "Id": "org.kde.lightly",
         "Name": "Lightly",
         "ServiceTypes": [
             "org.kde.kdecoration2"
         ]
     },
+    "X-KDE-ConfigModule": "kcm_breezedecoration",
     "org.kde.kdecoration2": {
         "blur": true,
-        "kcmodule": true,
         "recommendedBorderSize": "None"
     }
 }
