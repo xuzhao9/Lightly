@@ -4,11 +4,11 @@
         "EnabledByDefault": true,
         "Name": "Lightly",
         "ServiceTypes": [
-            "org.kde.kdecoration2"
+            "org.kde.kdecoration3"
         ]
     },
     "X-KDE-ConfigModule": "kcm_lightlydecoration",
-    "org.kde.kdecoration2": {
+    "org.kde.kdecoration3": {
         "blur": true,
         "recommendedBorderSize": "None"
     }
