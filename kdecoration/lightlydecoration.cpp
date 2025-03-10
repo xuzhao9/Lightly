@@ -35,6 +35,7 @@
 #include <KDecoration3/DecorationButtonGroup>
 #include <KDecoration3/DecorationSettings>
 #include <KDecoration3/DecorationShadow>
+#include <KDecoration3/ScaleHelpers>
 
 #include <KConfigGroup>
 #include <KColorUtils>
@@ -286,6 +287,7 @@ namespace Lightly
         connect(c, &KDecoration3::DecoratedWindow::maximizedChanged, this, &Decoration::updateButtonsGeometry);
         connect(c, &KDecoration3::DecoratedWindow::adjacentScreenEdgesChanged, this, &Decoration::updateButtonsGeometry);
         connect(c, &KDecoration3::DecoratedWindow::shadedChanged, this, &Decoration::updateButtonsGeometry);
+        connect(c, &KDecoration3::DecoratedWindow::nextScaleChanged, this, &Decoration::updateScale);
 
         createButtons();
         createShadow();
@@ -299,11 +301,11 @@ namespace Lightly
         auto s = settings();
         auto c = window();
         const bool maximized = isMaximized();
-        const int width =  maximized ? c->width() : c->width() - 2*s->largeSpacing()*Metrics::TitleBar_SideMargin;
-        const int height = maximized ? borderTop() : borderTop() - s->smallSpacing()*Metrics::TitleBar_TopMargin;
-        const int x = maximized ? 0 : s->largeSpacing()*Metrics::TitleBar_SideMargin;
-        const int y = maximized ? 0 : s->smallSpacing()*Metrics::TitleBar_TopMargin;
-        setTitleBar(QRect(x, y, width, height));
+        const qreal width =  maximized ? c->width() : c->width() - 2*s->largeSpacing()*Metrics::TitleBar_SideMargin;
+        const qreal height = maximized ? borderTop() : borderTop() - s->smallSpacing()*Metrics::TitleBar_TopMargin;
+        const qreal x = maximized ? 0 : s->largeSpacing()*Metrics::TitleBar_SideMargin;
+        const qreal y = maximized ? 0 : s->smallSpacing()*Metrics::TitleBar_TopMargin;
+        setTitleBar(QRectF(x, y, width, height));
     }
 
     //________________________________________________________________
@@ -332,16 +334,17 @@ namespace Lightly
     }
 
     //________________________________________________________________
-    int Decoration::borderSize(bool bottom) const
+    qreal Decoration::borderSize(bool bottom, qreal scale) const
     {
-        const int baseSize = settings()->smallSpacing();
+        const qreal pixelSize = KDecoration3::pixelSize(scale);
+        const qreal baseSize = std::max<qreal>(pixelSize, KDecoration3::snapToPixelGrid(settings()->smallSpacing(), scale));
         if( m_internalSettings && (m_internalSettings->mask() & BorderSize ) )
         {
             switch (m_internalSettings->borderSize()) {
                 case InternalSettings::BorderNone: return 0;
-                case InternalSettings::BorderNoSides: return bottom ? qMax(4, baseSize) : 0;
+                case InternalSettings::BorderNoSides: return bottom ? KDecoration3::snapToPixelGrid(std::max(4.0, baseSize), scale) : 0;
                 default:
-                case InternalSettings::BorderTiny: return bottom ? qMax(4, baseSize) : baseSize;
+                case InternalSettings::BorderTiny: return bottom ? KDecoration3::snapToPixelGrid(std::max(4.0, baseSize), scale) : baseSize;
                 case InternalSettings::BorderNormal: return baseSize*2;
                 case InternalSettings::BorderLarge: return baseSize*3;
                 case InternalSettings::BorderVeryLarge: return baseSize*4;
@@ -354,9 +357,9 @@ namespace Lightly
 
             switch (settings()->borderSize()) {
                 case KDecoration3::BorderSize::None: return 0;
-                case KDecoration3::BorderSize::NoSides: return bottom ? qMax(4, baseSize) : 0;
+                case KDecoration3::BorderSize::NoSides: return bottom ? KDecoration3::snapToPixelGrid(std::max(4.0, baseSize), scale) : 0;
                 default:
-                case KDecoration3::BorderSize::Tiny: return bottom ? qMax(4, baseSize) : baseSize;
+                case KDecoration3::BorderSize::Tiny: return bottom ? KDecoration3::snapToPixelGrid(std::max(4.0, baseSize), scale) : baseSize;
                 case KDecoration3::BorderSize::Normal: return baseSize*2;
                 case KDecoration3::BorderSize::Large: return baseSize*3;
                 case KDecoration3::BorderSize::VeryLarge: return baseSize*4;
@@ -391,39 +394,43 @@ namespace Lightly
     }
 
     //________________________________________________________________
-    void Decoration::recalculateBorders()
+    QMarginsF Decoration::bordersFor(qreal scale) const
     {
         const auto c = window();
         auto s = settings();
 
         // left, right and bottom borders
-        const int left   = isLeftEdge() ? 0 : borderSize();
-        const int right  = isRightEdge() ? 0 : borderSize();
-        const int bottom = (c->isShaded() || isBottomEdge()) ? 0 : borderSize(true);
+        const qreal left   = isLeftEdge() ? 0 : borderSize();
+        const qreal right  = isRightEdge() ? 0 : borderSize();
+        const qreal bottom = (c->isShaded() || isBottomEdge()) ? 0 : borderSize(true);
 
-        int top = 0;
+        qreal top = 0;
         if( hideTitleBar() ) top = bottom;
         else {
 
             QFontMetrics fm(s->font());
-            top += qMax(fm.height(), buttonHeight() );
+            top += KDecoration3::snapToPixelGrid(std::max(fm.height(), buttonHeight()), scale);
 
             // padding below
             // extra pixel is used for the active window outline
             const int baseSize = s->smallSpacing();
-            top += baseSize*Metrics::TitleBar_BottomMargin + 1;
+            top += KDecoration3::snapToPixelGrid(baseSize * Metrics::TitleBar_BottomMargin + 1, scale);
 
             // padding above
-            top += baseSize*TitleBar_TopMargin;
+            top += KDecoration3::snapToPixelGrid(baseSize * Metrics::TitleBar_TopMargin, scale);
 
         }
-
-        setBorders(QMargins(left, top, right, bottom));
+        return QMarginsF(left, top, right, bottom);
+    }
+    
+    void Decoration::recalculateBorders()
+    {
+        setBorders(bordersFor(window()->nextScale()));
 
         // extended sizes
-        const int extSize = s->largeSpacing();
-        int extSides = 0;
-        int extBottom = 0;
+        const qreal extSize = window()->snapToPixelGrid(settings()->largeSpacing());
+        qreal extSides = 0;
+        qreal extBottom = 0;
         if( hasNoBorders() )
         {
             if( !isMaximizedHorizontally() ) extSides = extSize;
@@ -435,7 +442,7 @@ namespace Lightly
 
         }
 
-        setResizeOnlyBorders(QMargins(extSides, 0, extSides, extBottom));
+        setResizeOnlyBorders(QMarginsF(extSides, 0, extSides, extBottom));
     }
 
     //________________________________________________________________
@@ -536,7 +543,7 @@ namespace Lightly
             painter->setBrush( c->color( c->isActive() ? ColorGroup::Active : ColorGroup::Inactive, ColorRole::Frame ) );
 
             // clip away the top part
-            if( !hideTitleBar() ) painter->setClipRect(0, borderTop(), size().width(), size().height() - borderTop(), Qt::IntersectClip);
+            if( !hideTitleBar() ) painter->setClipRect(QRectF(0, borderTop(), size().width(), size().height() - borderTop()), Qt::IntersectClip);
 
             if( s->isAlphaChannelSupported() ) painter->drawRoundedRect(rect(), m_internalSettings->cornerRadius(), m_internalSettings->cornerRadius());
             else painter->drawRect( rect() );
@@ -565,7 +572,7 @@ namespace Lightly
     void Decoration::paintTitleBar(QPainter *painter, const QRectF &repaintRegion)
     {
         const auto c = window();
-        const QRectF titleRect(QPoint(0, 0), QSize(size().width(), borderTop()));
+        const QRectF titleRect(QPoint(0, 0), QSizeF(size().width(), borderTop()));
 
         if ( !titleRect.intersects(repaintRegion) ) return;
 
@@ -678,27 +685,36 @@ namespace Lightly
 
     }
 
+    void Decoration::onTabletModeChanged(bool mode)
+    {
+        m_tabletMode = mode;
+        Q_EMIT tabletModeChanged();
+
+        recalculateBorders();
+        updateButtonsGeometry();
+    }
+    
     //________________________________________________________________
-    int Decoration::captionHeight() const
+    qreal Decoration::captionHeight() const
     { return hideTitleBar() ? borderTop() : borderTop() - settings()->smallSpacing()*(Metrics::TitleBar_BottomMargin + Metrics::TitleBar_TopMargin ) - 1; }
 
     //________________________________________________________________
-    QPair<QRect,Qt::Alignment> Decoration::captionRect() const
+    QPair<QRectF,Qt::Alignment> Decoration::captionRect() const
     {
-        if( hideTitleBar() ) return qMakePair( QRect(), Qt::AlignCenter );
+        if( hideTitleBar() ) return qMakePair( QRectF(), Qt::AlignCenter );
         else {
 
             auto c = window();
-            const int leftOffset = m_leftButtons->buttons().isEmpty() ?
-                Metrics::TitleBar_SideMargin*settings()->smallSpacing():
-                m_leftButtons->geometry().x() + m_leftButtons->geometry().width() + Metrics::TitleBar_SideMargin*settings()->smallSpacing();
+            const qreal leftOffset = c->snapToPixelGrid(m_leftButtons->buttons().isEmpty() ? Metrics::TitleBar_SideMargin * settings()->smallSpacing()
+                                                                         : m_leftButtons->geometry().x() + m_leftButtons->geometry().width()
+                                              + Metrics::TitleBar_SideMargin * settings()->smallSpacing());
 
-            const int rightOffset = m_rightButtons->buttons().isEmpty() ?
-                Metrics::TitleBar_SideMargin*settings()->smallSpacing() :
-                size().width() - m_rightButtons->geometry().x() + Metrics::TitleBar_SideMargin*settings()->smallSpacing();
+            const qreal rightOffset = c->snapToPixelGrid(m_rightButtons->buttons().isEmpty() ? Metrics::TitleBar_SideMargin * settings()->smallSpacing()
+                                                                                                : size().width() - m_rightButtons->geometry().x()
+                                                                    + Metrics::TitleBar_SideMargin * settings()->smallSpacing());
 
-            const int yOffset = settings()->smallSpacing()*Metrics::TitleBar_TopMargin;
-            const QRect maxRect( leftOffset, yOffset, size().width() - leftOffset - rightOffset, captionHeight() );
+            const qreal yOffset = window()->snapToPixelGrid(settings()->smallSpacing() * Metrics::TitleBar_TopMargin);
+            const QRectF maxRect( leftOffset, yOffset, size().width() - leftOffset - rightOffset, captionHeight() );
 
             switch( m_internalSettings->titleAlignment() )
             {
@@ -716,8 +732,8 @@ namespace Lightly
                 {
 
                     // full caption rect
-                    const QRect fullRect = QRect( 0, yOffset, size().width(), captionHeight() );
-                    QRect boundingRect( settings()->fontMetrics().boundingRect( c->caption()).toRect() );
+                    const QRectF fullRect = QRect( 0, yOffset, size().width(), captionHeight() );
+                    QRectF boundingRect( settings()->fontMetrics().boundingRect( c->caption()).toRect() );
 
                     // text bounding rect
                     boundingRect.setTop( yOffset );
@@ -780,17 +796,17 @@ namespace Lightly
             QPainter painter(&shadowTexture);
             painter.setRenderHint(QPainter::Antialiasing);
 
-            const QRect outerRect = shadowTexture.rect();
+            const QRectF outerRect = shadowTexture.rect();
 
-            QRect boxRect(QPoint(0, 0), boxSize);
+            QRectF boxRect(QPoint(0, 0), boxSize);
             boxRect.moveCenter(outerRect.center());
 
-            const QMargins padding = QMargins(
+            const QMarginsF padding = QMargins(
                 boxRect.left() - outerRect.left() - Metrics::Shadow_Overlap - params.offset.x(),
                 boxRect.top() - outerRect.top() - Metrics::Shadow_Overlap - params.offset.y(),
                 outerRect.right() - boxRect.right() - Metrics::Shadow_Overlap + params.offset.x(),
                 outerRect.bottom() - boxRect.bottom() - Metrics::Shadow_Overlap + params.offset.y());
-            const QRect innerRect = outerRect - padding;
+            const QRectF innerRect = outerRect - padding;
             
             // Draw outline.
             painter.setPen(withOpacity(g_shadowColor, 0.4 * strength));
@@ -815,7 +831,7 @@ namespace Lightly
 
             g_sShadow = std::make_shared<KDecoration3::DecorationShadow>();
             g_sShadow->setPadding(padding);
-            g_sShadow->setInnerShadowRect(QRect(outerRect.center(), QSize(1, 1)));
+            g_sShadow->setInnerShadowRect(QRectF(outerRect.center(), QSizeF(1, 1)));
             g_sShadow->setShadow(shadowTexture);
         }
 
@@ -855,6 +871,20 @@ namespace Lightly
             m_sizeGrip->deleteLater();
             m_sizeGrip = nullptr;
         }
+    }
+    
+    void Decoration::setScaledCornerRadius()
+    {
+        // On X11, the smallSpacing value is used for scaling.
+        // On Wayland, this value has constant factor of 2.
+        // Removing it will break radius scaling on X11.
+        m_scaledCornerRadius = window()->snapToPixelGrid(Metrics::Frame_FrameRadius * settings()->smallSpacing());
+    }
+    
+    void Decoration::updateScale()
+    {
+        setScaledCornerRadius();
+        recalculateBorders();
     }
 
 } // namespace

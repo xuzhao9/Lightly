@@ -53,7 +53,7 @@ namespace Lightly
         explicit Decoration(QObject *parent = nullptr, const QVariantList &args = QVariantList());
 
         //* destructor
-        virtual ~Decoration();
+         ~Decoration() override;
 
         //* paint
         void paint(QPainter *painter, const QRectF &repaintRegion) override;
@@ -63,7 +63,7 @@ namespace Lightly
         { return m_internalSettings; }
 
         //* caption height
-        int captionHeight() const;
+        qreal captionHeight() const;
 
         //* button height
         int buttonHeight() const;
@@ -98,6 +98,9 @@ namespace Lightly
         inline bool hideTitleBar() const;
         //@}
 
+        Q_SIGNALS:
+        void tabletModeChanged();
+        
         public Q_SLOTS:
         bool init() override;
 
@@ -109,22 +112,26 @@ namespace Lightly
         void updateTitleBar();
         void updateAnimationState();
         void updateSizeGripVisibility();
-
+        void onTabletModeChanged(bool mode);
+        void updateScale();
+        
         private:
 
         //* return the rect in which caption will be drawn
-        QPair<QRect,Qt::Alignment> captionRect() const;
+        QPair<QRectF,Qt::Alignment> captionRect() const;
 
         void createButtons();
         void paintTitleBar(QPainter *painter, const QRectF &repaintRegion);
         void createShadow();
+        void setScaledCornerRadius();
 
         //*@name border size
         //@{
-        int borderSize(bool bottom = false) const;
+        qreal borderSize(bool bottom = false, qreal scale = 1.0) const;
         inline bool hasBorders() const;
         inline bool hasNoBorders() const;
         inline bool hasNoSideBorders() const;
+        QMarginsF bordersFor(qreal scale) const;
         //@}
 
         //*@name size grip
@@ -147,6 +154,11 @@ namespace Lightly
 
         //* active state change opacity
         qreal m_opacity = 0;
+        
+        //*frame corner radius, scaled according to DPI
+        qreal m_scaledCornerRadius = 3;
+        
+        bool m_tabletMode = false;
 
     };
 

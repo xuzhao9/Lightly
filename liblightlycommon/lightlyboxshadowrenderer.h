@@ -87,6 +87,7 @@ public:
      * @param offset The offset of the shadow.
      **/
     static QSize calculateMinimumShadowTextureSize(const QSize &boxSize, int radius, const QPoint &offset);
+    
 
 private:
     QSize m_boxSize;
