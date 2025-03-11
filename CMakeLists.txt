@@ -31,16 +31,19 @@ set_package_properties(KF${QT_MAJOR_VERSION}FrameworkIntegration PROPERTIES
     TYPE OPTIONAL
     PURPOSE "Required to use KStyle convenience functionalities in style")
 
+option(FOR_FLATPAK "Build Lightly for Flatpak" OFF)
 option(WITH_DECORATIONS "Build Lightly window decorations for KWin" ON)
 if(WITH_DECORATIONS)
     find_package(KDecoration2 REQUIRED)
     add_subdirectory(kdecoration)
 endif()
 
-add_subdirectory(colors)
 add_subdirectory(liblightlycommon)
 add_subdirectory(kstyle)
-add_subdirectory(misc)
+if (!FOR_FLATPAK)
+    add_subdirectory(colors)
+    add_subdirectory(misc)
+endif()
 
 include(ECMSetupVersion)
 ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX LIGHTLY

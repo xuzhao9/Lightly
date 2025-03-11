@@ -136,4 +136,8 @@ install(TARGETS lightly DESTINATION ${KDE_INSTALL_QTPLUGINDIR}/styles/)
 install(FILES lightly.themerc  DESTINATION  ${KDE_INSTALL_DATADIR}/kstyle/themes)
 
 ########### subdirectories ###############
-add_subdirectory(config)
+
+if(!FOR_FLATPAK)
+    add_subdirectory(config)
+endif()
+
