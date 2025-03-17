@@ -280,6 +280,7 @@ namespace Lightly
 
         connect(c, &KDecoration3::DecoratedWindow::activeChanged, this, &Decoration::updateAnimationState);
         connect(c, &KDecoration3::DecoratedWindow::widthChanged, this, &Decoration::updateTitleBar);
+        connect(c, &KDecoration3::DecoratedWindow::adjacentScreenEdgesChanged, this, &Decoration::updateTitleBar);
         connect(c, &KDecoration3::DecoratedWindow::maximizedChanged, this, &Decoration::updateTitleBar);
         connect(this, &KDecoration3::Decoration::bordersChanged, this, &Decoration::updateTitleBar);
 
@@ -428,7 +429,7 @@ namespace Lightly
         setBorders(bordersFor(window()->nextScale()));
 
         // extended sizes
-        const qreal extSize = window()->snapToPixelGrid(settings()->largeSpacing());
+        const qreal extSize = KDecoration3::snapToPixelGrid(settings()->largeSpacing(), window()->nextScale());
         qreal extSides = 0;
         qreal extBottom = 0;
         if( hasNoBorders() )
@@ -463,9 +464,10 @@ namespace Lightly
         const auto s = settings();
 
         // adjust button position
-        const int bHeight = captionHeight() + (isTopEdge() ? s->smallSpacing()*Metrics::TitleBar_TopMargin:0);
+        //const int bHeight = captionHeight() + (isTopEdge() ? s->smallSpacing()*Metrics::TitleBar_TopMargin:0);
         const int bWidth = buttonHeight();
-        const int verticalOffset = (isTopEdge() ? s->smallSpacing()*Metrics::TitleBar_TopMargin:0) + (captionHeight()-buttonHeight())/2;
+        const int verticalOffset = (isTopEdge() ? s->smallSpacing()*Metrics::TitleBar_TopMargin:0); //+ (captionHeight()-buttonHeight())/2;
+        const int bHeight = buttonHeight() + verticalOffset;
         const auto buttonList = m_leftButtons->buttons() + m_rightButtons->buttons();
         for(const QPointer<KDecoration3::DecorationButton> button : buttonList)
         {
