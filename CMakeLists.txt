@@ -62,10 +62,12 @@ configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/LightlyConfig.cmake.i
 file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h)
 kde_clang_format(${ALL_CLANG_FORMAT_SOURCE_FILES})
 
+if (!FOR_FLATPAK)
 install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfig.cmake"
                "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfigVersion.cmake"
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
         COMPONENT Devel
 )
+endif()
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
