@@ -240,7 +240,7 @@ namespace Lightly
         if( isHidden() ) show();
 
         // store offsets between passed rect and parent widget rect
-        QRect parentRect( parentWidget()->contentsRect() );
+        QRectF parentRect( parentWidget()->contentsRect() );
         _margins = QMargins(
             rect.left() - parentRect.left(),
             rect.top() - parentRect.top(),
