@@ -1471,7 +1471,7 @@ namespace Lightly
             {
                 _helper->renderMenuFrame( &painter, rect, background, outline, false );
 
-            } else if( StyleConfigData::dockWidgetDrawFrame() &&  qobject_cast<const QDockWidget *>(dockWidget) ) {
+            } else if( StyleConfigData::dockWidgetDrawFrame() ||  qobject_cast<const QDockWidget *>(dockWidget) ) {
     
                 _helper->renderFrame( &painter, rect, background, palette, windowActive );
 
