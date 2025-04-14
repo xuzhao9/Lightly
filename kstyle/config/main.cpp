@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     KCMultiDialog dialog;
     dialog.setWindowTitle( i18n( "Lightly Settings" ) );
     dialog.addModule( QStringLiteral( "kstyle_config/lightlystyleconfig" ) );
-    dialog.addModule( QStringLiteral( "org.kde.kdecoration2.kcm/kcm_lightlydecoration.so" ) );
+    dialog.addModule( QStringLiteral( "org.kde.kdecoration3.kcm/kcm_lightlydecoration.so" ) );
     dialog.show();
 
     const auto children = dialog.findChildren<QAbstractScrollArea *>();

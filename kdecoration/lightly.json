@@ -7,7 +7,7 @@
             "org.kde.kdecoration2"
         ]
     },
-    "org.kde.kdecoration2": {
+    "org.kde.kdecoration3": {
         "blur": true,
         "kcmodule": true,
         "recommendedBorderSize": "None"

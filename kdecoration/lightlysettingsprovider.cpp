@@ -73,9 +73,6 @@ namespace Lightly
         QString windowTitle;
         QString windowClass;
 
-        // get the client
-        const auto client = decoration->window();
-
         for( auto internalSettings : std::as_const(m_exceptions) )
         {
 
@@ -94,14 +91,14 @@ namespace Lightly
             {
                 case InternalSettings::ExceptionWindowTitle:
                 {
-                    value = windowTitle.isEmpty() ? (windowTitle = client->caption()):windowTitle;
+                    value = windowTitle.isEmpty() ? (windowTitle = decoration->window()->caption()):windowTitle;
                     break;
                 }
 
                 default:
                 case InternalSettings::ExceptionWindowClassName:
                 {
-                    value = windowClass.isEmpty() ? (windowClass = client->windowClass()) : windowClass;
+                    value = windowClass.isEmpty() ? (windowClass = decoration->window()->windowClass()) : windowClass;
                     break;
                 }
 

@@ -519,7 +519,7 @@ namespace Lightly
     }
 
     //________________________________________________________________
-    void Decoration::paint(QPainter *painter, const QRect &repaintRegion)
+    void Decoration::paint(QPainter *painter, const QRectF &repaintRegion)
     {
         // TODO: optimize based on repaintRegion
         auto c = window();
@@ -561,12 +561,12 @@ namespace Lightly
     }
 
     //________________________________________________________________
-    void Decoration::paintTitleBar(QPainter *painter, const QRect &repaintRegion)
+    void Decoration::paintTitleBar(QPainter *painter, const QRectF &repaintRegion)
     {
         const auto c = window();
         const QRect titleRect(QPoint(0, 0), QSize(size().width(), borderTop()));
 
-        if ( !titleRect.intersects(repaintRegion) ) return;
+        if ( !QRectF(titleRect).intersects(repaintRegion) ) return;
 
         painter->save();
         painter->setPen(Qt::NoPen);

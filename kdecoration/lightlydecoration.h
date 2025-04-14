@@ -56,7 +56,7 @@ namespace Lightly
         virtual ~Decoration();
 
         //* paint
-        void paint(QPainter *painter, const QRect &repaintRegion) override;
+        void paint(QPainter *painter, const QRectF &repaintRegion) override;
 
         //* internal settings
         InternalSettingsPtr internalSettings() const
@@ -116,7 +116,7 @@ namespace Lightly
         QPair<QRect,Qt::Alignment> captionRect() const;
 
         void createButtons();
-        void paintTitleBar(QPainter *painter, const QRect &repaintRegion);
+        void paintTitleBar(QPainter *painter, const QRectF &repaintRegion);
         void createShadow();
 
         //*@name border size
@@ -179,26 +179,22 @@ namespace Lightly
 
     bool Decoration::isLeftEdge() const
     {
-        const auto c = window();
-        return (c->isMaximizedHorizontally() || c->adjacentScreenEdges().testFlag( Qt::LeftEdge ) ) && !m_internalSettings->drawBorderOnMaximizedWindows();
+        return (window()->isMaximizedHorizontally() || window()->adjacentScreenEdges().testFlag( Qt::LeftEdge ) ) && !m_internalSettings->drawBorderOnMaximizedWindows();
     }
 
     bool Decoration::isRightEdge() const
     {
-        const auto c = window();
-        return (c->isMaximizedHorizontally() || c->adjacentScreenEdges().testFlag( Qt::RightEdge ) ) && !m_internalSettings->drawBorderOnMaximizedWindows();
+        return (window()->isMaximizedHorizontally() || window()->adjacentScreenEdges().testFlag( Qt::RightEdge ) ) && !m_internalSettings->drawBorderOnMaximizedWindows();
     }
 
     bool Decoration::isTopEdge() const
     {
-        const auto c = window();
-        return (c->isMaximizedVertically() || c->adjacentScreenEdges().testFlag( Qt::TopEdge ) ) && !m_internalSettings->drawBorderOnMaximizedWindows();
+        return (window()->isMaximizedVertically() || window()->adjacentScreenEdges().testFlag( Qt::TopEdge ) ) && !m_internalSettings->drawBorderOnMaximizedWindows();
     }
 
     bool Decoration::isBottomEdge() const
     {
-        const auto c = window();
-        return (c->isMaximizedVertically() || c->adjacentScreenEdges().testFlag( Qt::BottomEdge ) ) && !m_internalSettings->drawBorderOnMaximizedWindows();
+        return (window()->isMaximizedVertically() || window()->adjacentScreenEdges().testFlag( Qt::BottomEdge ) ) && !m_internalSettings->drawBorderOnMaximizedWindows();
     }
 
     bool Decoration::hideTitleBar() const
