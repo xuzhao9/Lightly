@@ -133,7 +133,7 @@ endif()
 if (FOR_FLATPAK)
     set(LIB_TARGET ${QT_PLUGINS_DIR}/styles/)
 else()
-    set(LIB_TARGET ${KDE_INSTALL_QTPLUGINDIR}/kstyle/themes)
+    set(LIB_TARGET ${KDE_INSTALL_QTPLUGINDIR}/styles/)
 endif()
 ########### install files ###############
 install(TARGETS lightly DESTINATION ${LIB_TARGET})
