@@ -20,7 +20,7 @@
 
 #include "lightlysizegrip.h"
 
-#include <KDecoration2/DecoratedClient>
+#include <KDecoration3/DecoratedWindow>
 
 #include <QPainter>
 #include <QPolygon>
@@ -62,10 +62,10 @@ namespace Lightly
         updatePosition();
 
         // connections
-        auto c = decoration->client();
-        connect( c, &KDecoration2::DecoratedClient::widthChanged, this, &SizeGrip::updatePosition );
-        connect( c, &KDecoration2::DecoratedClient::heightChanged, this, &SizeGrip::updatePosition );
-        connect( c, &KDecoration2::DecoratedClient::activeChanged, this, &SizeGrip::updateActiveState );
+        auto c = decoration->window();
+        connect( c, &KDecoration3::DecoratedWindow::widthChanged, this, &SizeGrip::updatePosition );
+        connect( c, &KDecoration3::DecoratedWindow::heightChanged, this, &SizeGrip::updatePosition );
+        connect( c, &KDecoration3::DecoratedWindow::activeChanged, this, &SizeGrip::updateActiveState );
 
         // show
         show();
@@ -99,7 +99,7 @@ namespace Lightly
         #if LIGHTLY_HAVE_X11
 
         if( !QX11Info::isPlatformX11() ) return;
-        auto c = m_decoration.data()->client();
+        auto c = m_decoration.data()->window();
 
         xcb_window_t windowId = c->windowId();
         if( windowId )
@@ -191,7 +191,7 @@ namespace Lightly
         #if LIGHTLY_HAVE_X11
         if( !QX11Info::isPlatformX11() ) return;
 
-        auto c = m_decoration.data()->client().data();
+        auto c = m_decoration.data()->window().data();
         QPoint position(
             c->width() - GripSize - Offset,
             c->height() - GripSize - Offset );
@@ -213,7 +213,7 @@ namespace Lightly
         auto connection( QX11Info::connection() );
 
         // client
-        auto c = m_decoration.data()->client().data();
+        auto c = m_decoration.data()->window().data();
 
         /*
         get root position matching position

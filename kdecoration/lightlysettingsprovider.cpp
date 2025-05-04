@@ -74,7 +74,7 @@ namespace Lightly
         QString windowClass;
 
         // get the client
-        const auto client = decoration->client();
+        const auto client = decoration->window();
 
         for( auto internalSettings : std::as_const(m_exceptions) )
         {

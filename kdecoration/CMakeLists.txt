@@ -45,7 +45,7 @@ target_link_libraries(lightlydecoration
         KF6::GuiAddons
         KF6::I18n
         KF6::IconThemes
-        KDecoration2::KDecoration
+        KDecoration3::KDecoration
 )
 
 if(LIGHTLY_HAVE_X11)

@@ -34,7 +34,7 @@ set_package_properties(KF${QT_MAJOR_VERSION}FrameworkIntegration PROPERTIES
 option(FOR_FLATPAK "Build Lightly for Flatpak" OFF)
 option(WITH_DECORATIONS "Build Lightly window decorations for KWin" ON)
 if(WITH_DECORATIONS)
-    find_package(KDecoration2 REQUIRED)
+    find_package(KDecoration3 REQUIRED)
     add_subdirectory(kdecoration)
 endif()
 
