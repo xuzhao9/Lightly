@@ -707,15 +707,15 @@ namespace Lightly
         else {
 
             auto c = window();
-            const qreal leftOffset = c->snapToPixelGrid(m_leftButtons->buttons().isEmpty() ? Metrics::TitleBar_SideMargin * settings()->smallSpacing()
+            const qreal leftOffset = KDecoration3::snapToPixelGrid(m_leftButtons->buttons().isEmpty() ? Metrics::TitleBar_SideMargin * settings()->smallSpacing()
                                                                          : m_leftButtons->geometry().x() + m_leftButtons->geometry().width()
-                                              + Metrics::TitleBar_SideMargin * settings()->smallSpacing());
+                                              + Metrics::TitleBar_SideMargin * settings()->smallSpacing(), c->scale());
 
-            const qreal rightOffset = c->snapToPixelGrid(m_rightButtons->buttons().isEmpty() ? Metrics::TitleBar_SideMargin * settings()->smallSpacing()
+            const qreal rightOffset = KDecoration3::snapToPixelGrid(m_rightButtons->buttons().isEmpty() ? Metrics::TitleBar_SideMargin * settings()->smallSpacing()
                                                                                                 : size().width() - m_rightButtons->geometry().x()
-                                                                    + Metrics::TitleBar_SideMargin * settings()->smallSpacing());
+                                                                    + Metrics::TitleBar_SideMargin * settings()->smallSpacing(), c->scale());
 
-            const qreal yOffset = window()->snapToPixelGrid(settings()->smallSpacing() * Metrics::TitleBar_TopMargin);
+            const qreal yOffset = KDecoration3::snapToPixelGrid(settings()->smallSpacing() * Metrics::TitleBar_TopMargin, c->scale());
             const QRectF maxRect( leftOffset, yOffset, size().width() - leftOffset - rightOffset, captionHeight() );
 
             switch( m_internalSettings->titleAlignment() )
@@ -880,7 +880,7 @@ namespace Lightly
         // On X11, the smallSpacing value is used for scaling.
         // On Wayland, this value has constant factor of 2.
         // Removing it will break radius scaling on X11.
-        m_scaledCornerRadius = window()->snapToPixelGrid(Metrics::Frame_FrameRadius * settings()->smallSpacing());
+        m_scaledCornerRadius = KDecoration3::snapToPixelGrid(Metrics::Frame_FrameRadius * settings()->smallSpacing(), window()->scale());
     }
     
     void Decoration::updateScale()
