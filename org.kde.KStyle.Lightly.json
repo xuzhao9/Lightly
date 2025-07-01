@@ -1,0 +1,25 @@
+{
+    "id": "org.kde.KStyle.Lightly",
+    "branch": "6.9",
+    "runtime": "org.kde.Platform",
+    "build-extension": true,
+    "sdk": "org.kde.Sdk",
+    "runtime-version": "6.9",
+    "appstream-compose": false,
+    "separate-locales": false,
+    "modules": [
+            {
+                "name": "Lightly",
+                "buildsystem": "cmake",
+                "builddir": true,
+                "config-opts": ["-DQT_PLUGINS_DIR=/usr/share/runtime/lib/plugins/Lightly", "-DCMAKE_INSTALL_PREFIX=/usr/share/runtime/lib/plugins/Lightly",
+                                "-DUSE_QT6=ON", "-DWITH_DECORATIONS=OFF", "-DFOR_FLATPAK=ON"],
+                "sources": [
+                    {
+                        "type": "dir",
+                        "path": "."
+                    }
+                ]
+            }
+        ]
+}

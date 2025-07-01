@@ -31,16 +31,19 @@ set_package_properties(KF${QT_MAJOR_VERSION}FrameworkIntegration PROPERTIES
     TYPE OPTIONAL
     PURPOSE "Required to use KStyle convenience functionalities in style")
 
+option(FOR_FLATPAK "Build Lightly for Flatpak" OFF)
 option(WITH_DECORATIONS "Build Lightly window decorations for KWin" ON)
 if(WITH_DECORATIONS)
     find_package(KDecoration3 REQUIRED)
     add_subdirectory(kdecoration)
 endif()
 
-add_subdirectory(colors)
 add_subdirectory(liblightlycommon)
 add_subdirectory(kstyle)
-add_subdirectory(misc)
+if (!FOR_FLATPAK)
+    add_subdirectory(colors)
+    add_subdirectory(misc)
+endif()
 
 include(ECMSetupVersion)
 ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX LIGHTLY
@@ -59,10 +62,12 @@ configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/LightlyConfig.cmake.i
 file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h)
 kde_clang_format(${ALL_CLANG_FORMAT_SOURCE_FILES})
 
+if (!FOR_FLATPAK)
 install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfig.cmake"
                "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfigVersion.cmake"
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
         COMPONENT Devel
 )
+endif()
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
