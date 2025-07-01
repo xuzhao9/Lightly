@@ -355,6 +355,8 @@ namespace Lightly
         if (!(widget->testAttribute(Qt::WA_WState_Created) || widget->internalWinId()))
             return;
 
+        widget->winId(); // force creation of the window handle
+
         QRegion region = blurRegion(widget);
         if (region.isNull()) return;
 
