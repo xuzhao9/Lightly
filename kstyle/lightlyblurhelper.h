@@ -77,6 +77,8 @@ namespace Lightly
         //! handle blur region
         QRegion blurRegion (QWidget* widget) const;
 
+        QRegion blurSettingsDialogRegion(QWidget *widget) const;
+
         //! update blur regions for given widget
         void update( QWidget* ) const;
         
