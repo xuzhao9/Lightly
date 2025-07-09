@@ -309,11 +309,11 @@ namespace Lightly
     QRegion BlurHelper::blurSettingsDialogRegion(QWidget *widget) const
     {
         QRegion region;
-        QList<QWidget *> widgets = widget->findChildren<QWidget *>();
+        QList<QWidget *> widgets = widget->findChildren<QWidget *>( QString(), Qt::FindDirectChildrenOnly );
 
         // settings only change it for konsole or dolphin about window
         if ((widget->windowFlags() & Qt::WindowType_Mask) == Qt::Dialog
-            && (widget->inherits("KAboutApplicationDialog") || widget->inherits("KDEPrivate::KAboutKdeDialog"))) {
+            || (widget->inherits("KAboutApplicationDialog") || widget->inherits("KDEPrivate::KAboutKdeDialog"))) {
             for (auto w : widgets) {
                 if (qobject_cast<QTabWidget *>(w) && (widget->inherits("KAboutApplicationDialog") || widget->inherits("KDEPrivate::KAboutKdeDialog"))) {
                     // about dialog
@@ -352,7 +352,7 @@ namespace Lightly
         if (!(widget->testAttribute(Qt::WA_WState_Created) || widget->internalWinId()))
             return;
 
-        widget->winId(); // force creation of the window handle
+        //widget->winId(); // force creation of the window handle
 
         QRegion region = blurRegion(widget);
         if (region.isNull()) return;

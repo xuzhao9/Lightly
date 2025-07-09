@@ -357,7 +357,7 @@ namespace Lightly
                     // blur
                     if( widget->palette().color( widget->backgroundRole() ).alpha() < 255 
                         || _helper->titleBarColor( true ).alphaF()*100.0 < 100
-                        || (StyleConfigData::dolphinSidebarOpacity() < 100 && _isDolphin ) )
+                        || (StyleConfigData::dolphinSidebarOpacity() < 100  && _isDolphin ) )
                     {
                         _blurHelper->registerWidget( widget, _isDolphin );
                     }
@@ -5465,14 +5465,14 @@ namespace Lightly
         {
             backgroundColor.setAlphaF( StyleConfigData::dolphinSidebarOpacity()/100.0 - 0.15 );
             painter->fillRect( rect, backgroundColor );
-            
+
             bool darkTheme ( _helper->isDarkTheme( palette ) );
-            
+
             // top shadow
             painter->setBrush( Qt::NoBrush );
             painter->setPen( QColor(0, 0, 0, darkTheme ? 80 : 40) );
             painter->drawLine( rect.topLeft(), rect.topRight() );
-            
+
             painter->drawLine( rect.topRight(), rect.bottomRight() );
 
             painter->setPen( QColor(0, 0, 0, darkTheme ? 28 : 16) );
@@ -5483,14 +5483,14 @@ namespace Lightly
 
             painter->setPen( QColor(0, 0, 0, darkTheme ? 2 : 1) );
             painter->drawLine( rect.topLeft() + QPoint(0, 3), rect.topRight() + QPoint(0, 3) );
-            
-            
-            
+
+
+
             return true;
         }
         else
         {
-            backgroundColor.setAlphaF(opacity/100.0);  
+            backgroundColor.setAlphaF(opacity/100.0);
             painter->fillRect( rect, backgroundColor );
         }
         
