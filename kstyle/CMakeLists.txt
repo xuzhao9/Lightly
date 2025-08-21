@@ -130,18 +130,18 @@ if(LIGHTLY_HAVE_KWAYLAND)
     target_link_libraries(lightly Plasma::KWaylandClient)
 endif()
 
-if (FOR_FLATPAK)
-    set(LIB_TARGET ${QT_PLUGINS_DIR}/styles/)
-else()
+if (NOT_FOR_FLATPAK)
     set(LIB_TARGET ${KDE_INSTALL_QTPLUGINDIR}/styles/)
+else()
+    set(LIB_TARGET ${QT_PLUGINS_DIR}/styles/)
 endif()
 ########### install files ###############
 install(TARGETS lightly DESTINATION ${LIB_TARGET})
-if (!FOR_FLATPAK)
+if (NOT_FOR_FLATPAK)
     install(FILES lightly.themerc  DESTINATION  ${KDE_INSTALL_DATADIR}/kstyle/themes)
 endif()
 ########### subdirectories ###############
 
-if(!FOR_FLATPAK)
+if(NOT_FOR_FLATPAK)
     add_subdirectory(config)
 endif()
