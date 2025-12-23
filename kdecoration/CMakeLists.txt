@@ -35,6 +35,9 @@ add_library(lightlydecoration MODULE
 set_target_properties(lightlydecoration PROPERTIES
   OUTPUT_NAME org.kde.lightly)
 
+target_compile_options(lightlydecoration
+    PRIVATE -std=c++20)
+
 target_link_libraries(lightlydecoration
     PRIVATE
         lightlycommon6
