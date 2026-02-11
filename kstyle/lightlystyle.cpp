@@ -168,11 +168,11 @@ namespace Lightly
     //______________________________________________________________
     Style::Style():
 
-        _helper( new Helper( StyleConfigData::self()->sharedConfig() ) )
+        _helper(std::make_shared<Helper>(StyleConfigData::self()->sharedConfig()))
         , _shadowHelper( new ShadowHelper( this, *_helper ) )
         , _animations( new Animations( this ) )
         , _mnemonics( new Mnemonics( this ) )
-        , _blurHelper( new BlurHelper( this ) )
+        , _blurHelper(std::make_unique<BlurHelper>(_helper))
         , _windowManager( new WindowManager( this ) )
         , _frameShadowFactory( new FrameShadowFactory( this ) )
         , _mdiWindowShadowFactory( new MdiWindowShadowFactory( this ) )
@@ -211,7 +211,7 @@ namespace Lightly
     Style::~Style()
     {
         delete _shadowHelper;
-        delete _helper;
+        // delete _helper;
     }
     
     //______________________________________________________________

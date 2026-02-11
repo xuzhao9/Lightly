@@ -45,7 +45,7 @@ namespace Lightly
 
         // frames
         Frame_FrameWidth = 5,
-        //Frame_FrameRadius = 6,
+        Frame_FrameRadius = 6,
 
         // layout
         Layout_TopLevelMarginWidth = 10,

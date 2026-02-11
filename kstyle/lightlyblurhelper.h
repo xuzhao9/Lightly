@@ -44,10 +44,10 @@ namespace Lightly
     {
         Q_OBJECT
 
-        public:
+    public:
 
         //! constructor
-        BlurHelper( QObject* );
+        explicit BlurHelper( const std::shared_ptr<Helper> &helper);
 
         //! register widget
         void registerWidget( QWidget*, const bool isDolphin );
@@ -65,7 +65,7 @@ namespace Lightly
         void setTranslucentTitlebar( bool value )
         { _translucentTitlebar = value; }
 
-        protected:
+    protected:
 
         //! install event filter to object, in a unique way
         void addEventFilter( QObject* object )
@@ -82,11 +82,11 @@ namespace Lightly
         //! update blur regions for given widget
         void update( QWidget* ) const;
         
-        private:
+    private:
         
         bool _isDolphin = false;
         bool _translucentTitlebar = false;
-            
+        std::shared_ptr<Helper> _helper;
 
     };
 

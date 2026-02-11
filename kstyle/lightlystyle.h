@@ -495,7 +495,7 @@ namespace Lightly
         //@}
 
         //* helper
-        Helper* _helper = nullptr;
+        std::shared_ptr<Helper> _helper;
 
         //* shadow helper
         ShadowHelper* _shadowHelper = nullptr;
@@ -507,7 +507,7 @@ namespace Lightly
         Mnemonics* _mnemonics = nullptr;
 
         //* blur helper
-        BlurHelper* _blurHelper = nullptr;
+        std::unique_ptr<BlurHelper> _blurHelper;
 
         //* window manager
         WindowManager* _windowManager = nullptr;

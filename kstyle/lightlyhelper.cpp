@@ -18,6 +18,7 @@
  *************************************************************************/
 
 #include "lightlyhelper.h"
+#include "lightlypropertynames.h"
 
 #include "lightly.h"
 
@@ -28,6 +29,7 @@
 #include <QApplication>
 #include <QPainter>
 #include <QtMath>
+#include <QMenuBar>
 
 #include <algorithm>
 
@@ -40,7 +42,7 @@ namespace Lightly
     static const qreal arrowShade = 0.15;
 
     //____________________________________________________________________
-    Helper::Helper( KSharedConfig::Ptr config, QObject *parent ):
+    Helper::Helper( KSharedConfig::Ptr config):
         _config( std::move( config ) )
     {
         
@@ -587,6 +589,40 @@ namespace Lightly
         }
 
     }
+
+    QRegion Helper::menuFrameRegion(const QMenu *widget)
+    {
+        if (!widget) {
+            return {};
+        }
+
+        const bool hasAlpha(hasAlphaChannel(widget));
+        const auto seamlessEdges = menuSeamlessEdges(widget);
+        const auto roundCorners = hasAlpha;
+
+        if (roundCorners) {
+            QRectF frameRect(widget->rect());
+
+            qreal radius(Metrics::Frame_FrameRadius);
+
+            frameRect.adjust( //
+                seamlessEdges.testFlag(Qt::LeftEdge) ? -radius : 0,
+                seamlessEdges.testFlag(Qt::TopEdge) ? -radius : 0,
+                seamlessEdges.testFlag(Qt::RightEdge) ? radius : 0,
+                seamlessEdges.testFlag(Qt::BottomEdge) ? radius : 0);
+
+            // outline is always valid/drawn
+            frameRect = strokedRect(frameRect);
+            radius = frameRadiusForNewPenWidth(radius, PenWidth::Frame);
+
+            QPainterPath path;
+            path.addRoundedRect(frameRect, radius, radius);
+            return QRegion(path.toFillPolygon().toPolygon()).intersected(widget->rect());
+        }
+
+        return QRegion(widget->rect());
+    }
+
     
     //______________________________________________________________________________
     void Helper::renderOutline(
@@ -1891,6 +1927,20 @@ namespace Lightly
             return true;
         }
         return false;
+    }
+
+    //____________________________________________________________________
+    Qt::Edges Helper::menuSeamlessEdges(const QWidget *widget)
+    {
+        if (widget) {
+            auto edges = widget->property(PropertyNames::menuSeamlessEdges).value<Qt::Edges>();
+            // Fallback to older property
+            if (edges == Qt::Edges() && widget->property(PropertyNames::isTopMenu).toBool()) {
+                edges = Qt::TopEdge;
+            }
+            return edges;
+        }
+        return Qt::Edges();
     }
 
     //______________________________________________________________________________________

@@ -42,7 +42,7 @@
 #include <QToolBar>
 #include <QVector>
 #include <QTabBar>
-//#include <QDebug>
+// #include <QDebug>
 namespace
 {
 	
@@ -90,8 +90,9 @@ namespace
 namespace Lightly
 {
     //___________________________________________________________
-    BlurHelper::BlurHelper(QObject* parent):
-        QObject(parent)
+    BlurHelper::BlurHelper(const std::shared_ptr<Helper> &helper)
+        : QObject()
+        , _helper(helper)
     {
     }
 
@@ -168,6 +169,7 @@ namespace Lightly
             // toolbar and menubar
             if (_translucentTitlebar
                 || StyleConfigData::dolphinSidebarOpacity() < 100) {
+                    
                 // menubar
                 int menubarHeight = 0;
                 if (QMainWindow *mw = qobject_cast<QMainWindow *>(widget)) {
@@ -217,15 +219,16 @@ namespace Lightly
                         if (mainToolbar.y() == 0 || mainToolbar.y() == menubarHeight) {
                             mainToolbar.setX(0);
                             mainToolbar.setWidth(widget->width());
-                            region += mainToolbar;
+                            // TODO: Okular will segfault when blurring the mainToolbar 
+                            // region += mainToolbar;
                         }
 
                         // round corners if it is at the bottom
                         else if (mainToolbar.y() + mainToolbar.height() == widget->height())
                             region += roundedRegion(mainToolbar, StyleConfigData::cornerRadius(), false, false, false, true);
 
-                        // else
-                        //     region += mainToolbar;
+                        else
+                            region += mainToolbar;
 
                     } else {
                         // round bottom left
@@ -237,7 +240,7 @@ namespace Lightly
                             region += roundedRegion(mainToolbar, StyleConfigData::cornerRadius(), false, false, false, true);
 
                         // no round corners
-                        // else region += mainToolbar; //FIXME: is this valid?
+                        else region += mainToolbar; //FIXME: is this valid?
                     }
                 }
             }
@@ -352,9 +355,13 @@ namespace Lightly
         if (!(widget->testAttribute(Qt::WA_WState_Created) || widget->internalWinId()))
             return;
 
-        //widget->winId(); // force creation of the window handle
+        // widget->winId(); // force creation of the window handle
 
         QRegion region = blurRegion(widget);
+        if (const auto menu = qobject_cast<QMenu *>(widget)) {
+            region = _helper->menuFrameRegion(menu);
+        }
+
         if (region.isNull()) return;
 
         KWindowEffects::enableBlurBehind(widget->windowHandle(), true, region);

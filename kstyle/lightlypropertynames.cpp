@@ -30,6 +30,8 @@ namespace Lightly
     const char PropertyNames::sidePanelView[] = "_kde_side_panel_view";
     const char PropertyNames::toolButtonAlignment[] = "_kde_toolButton_alignment";
     const char PropertyNames::menuTitle[] = "_lightly_toolButton_menutitle";
+    const char PropertyNames::isTopMenu[] = "_lightly_menu_is_top";
+    const char PropertyNames::menuSeamlessEdges[] = "_lightly_menu_seamless_edges";
     const char PropertyNames::alteredBackground[] = "_lightly_altered_background";
 
 }
