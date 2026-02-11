@@ -36,6 +36,8 @@
 #include <QIcon>
 #include <QWidget>
 
+class QEvent;
+
 namespace Lightly
 {
 
@@ -56,6 +58,8 @@ namespace Lightly
 
         //* load configuration
         virtual void loadConfig();
+
+        bool eventFilter( QObject*, QEvent* ) override;
 
         //* pointer to shared config
         KSharedConfig::Ptr config() const;
@@ -343,6 +347,8 @@ namespace Lightly
         QColor _inactiveTitleBarColor;
         QColor _inactiveTitleBarTextColor;
         //@}
+
+        void updateTitleBarColors();
 
     };
 
