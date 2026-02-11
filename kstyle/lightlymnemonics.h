@@ -37,8 +37,8 @@ namespace Lightly
         public:
 
         //* constructor
-        explicit Mnemonics( QObject* parent ):
-            QObject( parent )
+        explicit Mnemonics():
+            QObject()
             {}
 
         //* set mode
