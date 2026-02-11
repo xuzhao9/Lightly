@@ -59,7 +59,7 @@ namespace Lightly
         public:
 
         //* constructor
-        explicit WindowManager( QObject* );
+        explicit WindowManager();
 
         //* initialize
         /** read relevant options from config */

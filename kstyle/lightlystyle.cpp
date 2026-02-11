@@ -173,7 +173,7 @@ namespace Lightly
         , _animations(std::make_unique<Animations>())
         , _mnemonics(std::make_unique<Mnemonics>())
         , _blurHelper(std::make_unique<BlurHelper>(_helper))
-        , _windowManager(std::make_unique<WindowManager>(this))
+        , _windowManager(std::make_unique<WindowManager>())
         , _frameShadowFactory( new FrameShadowFactory( this ) )
         , _mdiWindowShadowFactory( new MdiWindowShadowFactory( this ) )
         , _splitterFactory( new SplitterFactory( this ) )

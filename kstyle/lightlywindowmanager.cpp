@@ -187,8 +187,8 @@ namespace Lightly
     };
 
     //_____________________________________________________________
-    WindowManager::WindowManager( QObject* parent ):
-        QObject( parent )
+    WindowManager::WindowManager():
+        QObject()
     {
 
         // install application wise event filter
