@@ -169,8 +169,8 @@ namespace Lightly
     Style::Style():
 
         _helper(std::make_shared<Helper>(StyleConfigData::self()->sharedConfig()))
-        , _shadowHelper( new ShadowHelper( this, *_helper ) )
-        , _animations( new Animations( this ) )
+        , _shadowHelper(std::make_unique<ShadowHelper>(_helper))
+        , _animations(std::make_unique<Animations>())
         , _mnemonics( new Mnemonics( this ) )
         , _blurHelper(std::make_unique<BlurHelper>(_helper))
         , _windowManager( new WindowManager( this ) )
@@ -208,11 +208,7 @@ namespace Lightly
     }
 
     //______________________________________________________________
-    Style::~Style()
-    {
-        delete _shadowHelper;
-        // delete _helper;
-    }
+    Style::~Style() = default;
     
     //______________________________________________________________
     void Style::polish(QApplication *app)
@@ -1775,7 +1771,7 @@ namespace Lightly
         _shadowHelper->loadConfig();
 
         // set mdiwindow factory shadow tiles
-        _mdiWindowShadowFactory->setShadowHelper( _shadowHelper );
+        _mdiWindowShadowFactory->setShadowHelper( _shadowHelper.get() );
 
         // clear icon cache
         _iconCache.clear();

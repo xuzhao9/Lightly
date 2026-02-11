@@ -498,10 +498,10 @@ namespace Lightly
         std::shared_ptr<Helper> _helper;
 
         //* shadow helper
-        ShadowHelper* _shadowHelper = nullptr;
+        std::unique_ptr<ShadowHelper> _shadowHelper;
 
         //* animations
-        Animations* _animations = nullptr;
+        std::unique_ptr<Animations> _animations;
 
         //* keyboard accelerators
         Mnemonics* _mnemonics = nullptr;

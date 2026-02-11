@@ -97,10 +97,11 @@ namespace Lightly
     }
 
     //_____________________________________________________
-    ShadowHelper::ShadowHelper( QObject* parent, Helper& helper ):
-        QObject( parent ),
-        _helper( helper )
+    ShadowHelper::ShadowHelper(const std::shared_ptr<Helper> &helper):
+        QObject(),
+        _helper(helper)
     {
+        Q_ASSERT(helper);
     }
 
     //_______________________________________________________
@@ -231,7 +232,7 @@ namespace Lightly
             .expandedTo(BoxShadowRenderer::calculateMinimumBoxSize(params.shadow3.radius));
 
         const qreal dpr = qApp->devicePixelRatio();
-        const qreal frameRadius = _helper.frameRadius(1);
+        const qreal frameRadius = _helper->frameRadius(1);
 
         BoxShadowRenderer shadowRenderer;
         shadowRenderer.setBorderRadius(frameRadius);
@@ -555,7 +556,7 @@ namespace Lightly
             }
         }
 
-        margins *= _helper.devicePixelRatio(_shadowTiles.pixmap(0));
+        margins *= devicePixelRatio(widget);
 
         return margins.toMargins();
     }
@@ -566,4 +567,10 @@ namespace Lightly
         delete _shadows.take( widget->windowHandle() );
     }
 
+    //_______________________________________________________
+    qreal ShadowHelper::devicePixelRatio(QWidget *widget)
+    {
+        // On Wayland, the compositor will upscale the shadow tiles if necessary.
+        return Helper::isWayland() ? 1 : widget->devicePixelRatioF();
+    }
 }

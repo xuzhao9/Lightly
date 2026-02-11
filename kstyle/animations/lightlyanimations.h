@@ -45,7 +45,7 @@ namespace Lightly
         public:
 
         //* constructor
-        explicit Animations( QObject* );
+        explicit Animations( );
 
         //* register animations corresponding to given widget, depending on its type.
         void registerWidget( QWidget* widget ) const;
