@@ -24,8 +24,6 @@
 
 K_PLUGIN_CLASS_WITH_JSON(Lightly::ConfigurationModule, "lightlystyleconfig.json")
 
-#include "lightlystyleconfigmodule.moc"
-
 namespace Lightly
 {
 
