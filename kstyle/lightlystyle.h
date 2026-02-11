@@ -504,13 +504,13 @@ namespace Lightly
         std::unique_ptr<Animations> _animations;
 
         //* keyboard accelerators
-        Mnemonics* _mnemonics = nullptr;
+        std::unique_ptr<Mnemonics> _mnemonics;
 
         //* blur helper
         std::unique_ptr<BlurHelper> _blurHelper;
 
         //* window manager
-        WindowManager* _windowManager = nullptr;
+        std::unique_ptr<WindowManager> _windowManager;
 
         //* frame shadows
         FrameShadowFactory* _frameShadowFactory = nullptr;
