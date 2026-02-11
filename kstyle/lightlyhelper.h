@@ -48,7 +48,7 @@ namespace Lightly
         public:
 
         //* constructor
-        explicit Helper( KSharedConfig::Ptr, QObject *parent = nullptr );
+        explicit Helper( KSharedConfig::Ptr );
 
         //* destructor
         virtual ~Helper()
@@ -170,6 +170,8 @@ namespace Lightly
 
         //* menu frame
         void renderMenuFrame( QPainter*, const QRect&, const QColor& color, const QColor& outline, bool roundCorners = true ) const;
+
+        QRegion menuFrameRegion(const QMenu *widget);
         
         //* outline for widgets
         void renderOutline(QPainter* painter, const QRectF& rect, const int radius, const int outlineStrength ) const;
@@ -313,6 +315,8 @@ namespace Lightly
         
         QPixmap coloredIcon(const QIcon &icon, const QPalette& palette, const QSize &size,
                             QIcon::Mode mode = QIcon::Normal, QIcon::State state = QIcon::Off);
+
+        static Qt::Edges menuSeamlessEdges(const QWidget *);
 
         protected:
 

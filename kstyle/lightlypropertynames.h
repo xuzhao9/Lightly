@@ -33,6 +33,8 @@ namespace Lightly
         static const char sidePanelView[];
         static const char toolButtonAlignment[];
         static const char menuTitle[];
+        static const char isTopMenu[];
+        static const char menuSeamlessEdges[];
         static const char alteredBackground[];
     };
 
