@@ -99,7 +99,7 @@ namespace Lightly
         public:
 
         //* constructor
-        ShadowHelper( QObject*, Helper& );
+        ShadowHelper(const std::shared_ptr<Helper> &helper);
 
         //* destructor
         ~ShadowHelper() override;
@@ -167,10 +167,13 @@ namespace Lightly
         //* gets the shadow margins for the given widget
         QMargins shadowMargins( QWidget* ) const;
 
+        //* return device pixel ratio for the window containing the widget
+        static qreal devicePixelRatio(QWidget *);
+
         private:
 
         //* helper
-        Helper& _helper;
+        std::shared_ptr<Helper> _helper;
 
         //* registered widgets
         QSet<QWidget*> _widgets;

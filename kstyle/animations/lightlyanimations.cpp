@@ -41,8 +41,8 @@ namespace Lightly
 {
 
     //____________________________________________________________
-    Animations::Animations( QObject* parent ):
-        QObject( parent )
+    Animations::Animations( ):
+        QObject( )
     {
         _widgetEnabilityEngine = new WidgetStateEngine( this );
         _busyIndicatorEngine = new BusyIndicatorEngine( this );
