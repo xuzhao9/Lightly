@@ -803,12 +803,11 @@ namespace Lightly
             QRectF boxRect(QPoint(0, 0), boxSize);
             boxRect.moveCenter(outerRect.center());
 
-            const qreal shadowOverlap = static_cast<qreal>( Metrics::Shadow_Overlap );
-            const QMarginsF padding(
-                boxRect.left() - outerRect.left() - shadowOverlap - params.offset.x(),
-                boxRect.top() - outerRect.top() - shadowOverlap - params.offset.y(),
-                outerRect.right() - boxRect.right() - shadowOverlap + params.offset.x(),
-                outerRect.bottom() - boxRect.bottom() - shadowOverlap + params.offset.y());
+            const QMarginsF padding = QMargins(
+                boxRect.left() - outerRect.left() - Metrics::Shadow_Overlap - params.offset.x(),
+                boxRect.top() - outerRect.top() - Metrics::Shadow_Overlap - params.offset.y(),
+                outerRect.right() - boxRect.right() - Metrics::Shadow_Overlap + params.offset.x(),
+                outerRect.bottom() - boxRect.bottom() - Metrics::Shadow_Overlap + params.offset.y());
             const QRectF innerRect = outerRect - padding;
             
             // Draw outline.
