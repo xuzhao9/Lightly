@@ -172,13 +172,7 @@ namespace Lightly
             post some mouseRelease event to the target, in order to counter balance
             the mouse press that triggered the drag. Note that it triggers a resetDrag
             */
-            QMouseEvent mouseEvent(
-                QEvent::MouseButtonRelease,
-                _parent->_dragPoint,
-                _parent->_globalDragPoint,
-                Qt::LeftButton,
-                Qt::LeftButton,
-                Qt::NoModifier );
+            QMouseEvent mouseEvent( QEvent::MouseButtonRelease, _parent->_dragPoint, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier );
             qApp->sendEvent( _parent->_target.data(), &mouseEvent );
 
             return false;
@@ -430,7 +424,7 @@ namespace Lightly
         {
             _quickTarget = item;
             _dragPoint = mouseEvent->pos();
-            _globalDragPoint = mouseEvent->globalPosition().toPoint();
+            _globalDragPoint = mouseEvent->globalPos();
 
             if( _dragTimer.isActive() ) _dragTimer.stop();
             _dragTimer.start( _dragDelay, this );
@@ -453,7 +447,7 @@ namespace Lightly
         // save target and drag point
         _target = widget;
         _dragPoint = position;
-        _globalDragPoint = mouseEvent->globalPosition().toPoint();
+        _globalDragPoint = mouseEvent->globalPos();
         _dragAboutToStart = true;
 
         // send a move event to the current child with same position
@@ -461,14 +455,7 @@ namespace Lightly
         auto localPoint( _dragPoint );
         if( child ) localPoint = child->mapFrom( widget, localPoint );
         else child = widget;
-        const QPointF globalPoint = widget->mapToGlobal( _dragPoint );
-        QMouseEvent localMouseEvent(
-            QEvent::MouseMove,
-            localPoint,
-            globalPoint,
-            Qt::LeftButton,
-            Qt::LeftButton,
-            Qt::NoModifier );
+        QMouseEvent localMouseEvent( QEvent::MouseMove, localPoint, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier );
         qApp->sendEvent( child, &localMouseEvent );
 
         // never eat event
@@ -503,7 +490,7 @@ namespace Lightly
 
                 } else resetDrag();
 
-            } else if( QPoint( mouseEvent->globalPosition().toPoint() - _globalDragPoint ).manhattanLength() >= _dragDistance ) {
+            } else if( QPoint( mouseEvent->globalPos() - _globalDragPoint ).manhattanLength() >= _dragDistance ) {
 
                 _dragTimer.start( 0, this );
 

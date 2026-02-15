@@ -27,7 +27,6 @@
 #include <KWindowSystem>
 
 #include <QApplication>
-#include <QEvent>
 #include <QPainter>
 #include <QtMath>
 #include <QMenuBar>
@@ -47,39 +46,20 @@ namespace Lightly
         _config( std::move( config ) )
     {
         
-        if( qApp )
-        {
-            qApp->installEventFilter( this );
-            updateTitleBarColors();
+        if ( qApp ) {
+            connect(qApp, &QApplication::paletteChanged, this, [=]() {
+                if (qApp->property("KDE_COLOR_SCHEME_PATH").isValid()) {
+                    const auto path = qApp->property("KDE_COLOR_SCHEME_PATH").toString();
+                    KConfig config(path, KConfig::SimpleConfig);
+                    KConfigGroup group( config.group("WM") );
+                    const QPalette palette( QApplication::palette() );
+                    _activeTitleBarColor = group.readEntry( "activeBackground", palette.color( QPalette::Active, QPalette::Highlight ) );
+                    _activeTitleBarTextColor = group.readEntry( "activeForeground", palette.color( QPalette::Active, QPalette::HighlightedText ) );
+                    _inactiveTitleBarColor = group.readEntry( "inactiveBackground", palette.color( QPalette::Disabled, QPalette::Highlight ) );
+                    _inactiveTitleBarTextColor = group.readEntry( "inactiveForeground", palette.color( QPalette::Disabled, QPalette::HighlightedText ) );
+                }
+            });
         }
-    }
-
-    //____________________________________________________________________
-    bool Helper::eventFilter( QObject* object, QEvent* event )
-    {
-
-        if( object == qApp && event->type() == QEvent::ApplicationPaletteChange )
-        { updateTitleBarColors(); }
-
-        return QObject::eventFilter( object, event );
-
-    }
-
-    //____________________________________________________________________
-    void Helper::updateTitleBarColors()
-    {
-
-        if( !qApp || !qApp->property( "KDE_COLOR_SCHEME_PATH" ).isValid() ) return;
-
-        const auto path = qApp->property( "KDE_COLOR_SCHEME_PATH" ).toString();
-        KConfig config( path, KConfig::SimpleConfig );
-        KConfigGroup group( config.group( "WM" ) );
-        const QPalette palette( QApplication::palette() );
-        _activeTitleBarColor = group.readEntry( "activeBackground", palette.color( QPalette::Active, QPalette::Highlight ) );
-        _activeTitleBarTextColor = group.readEntry( "activeForeground", palette.color( QPalette::Active, QPalette::HighlightedText ) );
-        _inactiveTitleBarColor = group.readEntry( "inactiveBackground", palette.color( QPalette::Disabled, QPalette::Highlight ) );
-        _inactiveTitleBarTextColor = group.readEntry( "inactiveForeground", palette.color( QPalette::Disabled, QPalette::HighlightedText ) );
-
     }
 
     //____________________________________________________________________
@@ -157,10 +137,6 @@ namespace Lightly
     //____________________________________________________________________
     QColor Helper::sidePanelOutlineColor( const QPalette& palette, bool hasFocus, qreal opacity, AnimationMode mode ) const
     {
-
-        Q_UNUSED( hasFocus );
-        Q_UNUSED( opacity );
-        Q_UNUSED( mode );
 
         QColor outline( qGray(palette.color( QPalette::Window ).rgb()) > 150 ? QColor(0,0,0,20) : QColor(0,0,0,50) );
         return outline;
@@ -484,8 +460,6 @@ namespace Lightly
         QPainter* painter, const QRect& rect,
         const QColor& color, const QPalette& palette, const bool windowActive, const bool enabled ) const
     {
-
-        Q_UNUSED( palette );
 
         painter->setRenderHint( QPainter::Antialiasing );
 
@@ -1576,8 +1550,8 @@ namespace Lightly
         const QRectF baseRect( rect );
         
         int thickness = Metrics::ProgressBar_Thickness;
-        if( !isContent ) thickness = qMax( Metrics::ProgressBar_Thickness-2, 0 );
-        const qreal radius( 0.5*thickness );
+        if( !isContent ) thickness = qMax(Metrics::ProgressBar_Thickness-2, 0);
+        const qreal radius( 0.5*Metrics::ProgressBar_Thickness);
 
         // content
         if( color.isValid() )

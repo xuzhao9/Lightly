@@ -296,8 +296,6 @@ namespace Lightly
             reinterpret_cast<const char*>(&clientMessageEvent) );
 
         xcb_flush( connection );
-        #else
-        Q_UNUSED( position );
         #endif
 
     }
