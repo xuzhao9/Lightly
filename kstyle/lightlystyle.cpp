@@ -196,11 +196,7 @@ namespace Lightly
             QStringLiteral( "/LightlyDecoration" ),
             QStringLiteral( "org.kde.Lightly.Style" ),
             QStringLiteral( "reparseConfiguration" ), this, SLOT(configurationChanged()) );
-        #if QT_VERSION < 0x050D00 // Check if Qt version < 5.13
-        this->addEventFilter(qApp);
-        #else
-        connect(qApp, &QApplication::paletteChanged, this, &Style::configurationChanged);
-        #endif
+        this->addEventFilter( qApp );
         // call the slot directly; this initial call will set up things that also
         // need to be reset when the system palette changes
         loadConfiguration();
@@ -1166,9 +1162,7 @@ namespace Lightly
         if( auto dockWidget = qobject_cast<QDockWidget*>( object ) ) { return eventFilterDockWidget( dockWidget, event ); }
         else if( auto subWindow = qobject_cast<QMdiSubWindow*>( object ) ) { return eventFilterMdiSubWindow( subWindow, event ); }
         else if( auto commandLinkButton = qobject_cast<QCommandLinkButton*>( object ) ) { return eventFilterCommandLinkButton( commandLinkButton, event ); }
-        #if QT_VERSION < 0x050D00 // Check if Qt version < 5.13
         else if( object == qApp && event->type() == QEvent::ApplicationPaletteChange ) { configurationChanged(); }
-        #endif
         // cast to QWidget
         QWidget *widget = static_cast<QWidget*>( object );
         if( widget->inherits( "QAbstractScrollArea" ) || widget->inherits( "KTextEditor::View" ) ) { return eventFilterScrollArea( widget, event ); }
@@ -1386,8 +1380,10 @@ namespace Lightly
                     QMouseEvent copy(
                         mouseEvent->type(),
                         position,
+                        mouseEvent->globalPosition(),
                         mouseEvent->button(),
-                        mouseEvent->buttons(), mouseEvent->modifiers());
+                        mouseEvent->buttons(),
+                        mouseEvent->modifiers());
 
                     QCoreApplication::sendEvent( scrollBar, &copy );
                     event->setAccepted( true );
@@ -3590,6 +3586,8 @@ namespace Lightly
     bool Style::drawFrameGroupBoxPrimitive( const QStyleOption* option, QPainter* painter, const QWidget* widget) const
     {
 
+        Q_UNUSED( widget );
+
         // cast option and check
         const auto frameOption( qstyleoption_cast<const QStyleOptionFrame*>( option ) );
         if( !frameOption ) return true;
@@ -5242,8 +5240,6 @@ namespace Lightly
         const bool useStrongFocus( StyleConfigData::menuItemDrawStrongFocus() );
         
         _animations->inputWidgetEngine().updateState( widget, AnimationHover, selected );
-        const AnimationMode mode( _animations->inputWidgetEngine().buttonAnimationMode( widget ) );
-        const qreal opacity( _animations->inputWidgetEngine().buttonOpacity( widget ) );
 
         // render hover and focus
         if( selected || sunken )
@@ -5285,9 +5281,7 @@ namespace Lightly
             // checkbox state
 
             CheckBoxState state( menuItemOption->checked ? CheckOn : CheckOff );
-            const bool active( menuItemOption->checked );
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
-            const auto background( state == CheckOn ? palette.color( QPalette::Highlight ) : palette.color( QPalette::Button ) );
             //_helper->renderCheckBoxBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken );    //not needed
             _helper->renderCheckBox( painter, checkBoxRect, palette, true, sunken, ( selected || sunken ), state, windowActive );
 
@@ -5295,11 +5289,10 @@ namespace Lightly
 
             checkBoxRect = visualRect( option, checkBoxRect );
 
-            const bool active( menuItemOption->checked );
             //const auto shadow( _helper->shadowColor( palette ) );
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             //_helper->renderRadioButtonBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken ); //not needed
-            _helper->renderRadioButton( painter, checkBoxRect, palette, ( selected || sunken ), sunken, active ? RadioOn:RadioOff, true );
+            _helper->renderRadioButton( painter, checkBoxRect, palette, ( selected || sunken ), sunken, menuItemOption->checked ? RadioOn:RadioOff, true );
 
         }
 

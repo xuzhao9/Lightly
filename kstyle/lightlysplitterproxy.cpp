@@ -254,8 +254,10 @@ namespace Lightly
                     QMouseEvent copy(
                         mouseEvent->type(),
                         _hook,
+                        mouseEvent->globalPosition(),
                         mouseEvent->button(),
-                        mouseEvent->buttons(), mouseEvent->modifiers());
+                        mouseEvent->buttons(),
+                        mouseEvent->modifiers());
 
                     QCoreApplication::sendEvent( _splitter.data(), &copy );
 
@@ -264,9 +266,11 @@ namespace Lightly
                     // map event position to current splitter and post.
                    QMouseEvent copy(
                         mouseEvent->type(),
-                        _splitter.data()->mapFromGlobal( mouseEvent->globalPos() ),
+                        _splitter.data()->mapFromGlobal( mouseEvent->globalPosition().toPoint() ),
+                        mouseEvent->globalPosition(),
                         mouseEvent->button(),
-                        mouseEvent->buttons(), mouseEvent->modifiers());
+                        mouseEvent->buttons(),
+                        mouseEvent->modifiers());
 
                     QCoreApplication::sendEvent( _splitter.data(), &copy );
 
@@ -360,9 +364,13 @@ namespace Lightly
         // send hover event
         if( _splitter )
         {
+            const QPointF globalPos( QCursor::pos() );
+            const QPointF scenePos( _splitter.data()->mapFromGlobal( globalPos.toPoint() ) );
             QHoverEvent hoverEvent(
                 qobject_cast<QSplitterHandle*>(_splitter.data()) ? QEvent::HoverLeave : QEvent::HoverMove,
-                _splitter.data()->mapFromGlobal(QCursor::pos()), _hook);
+                scenePos,
+                globalPos,
+                QPointF( _hook ) );
             QCoreApplication::sendEvent( _splitter.data(), &hoverEvent );
             _splitter.clear();
 
