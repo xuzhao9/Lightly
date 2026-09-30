@@ -43,6 +43,7 @@
 #include <KPluginFactory>
 
 #include <QPainter>
+#include <QPainterPath>
 #include <QTextStream>
 #include <QTimer>
 #include <QVariantAnimation>
@@ -290,6 +291,14 @@ namespace Lightly
         connect(c, &KDecoration3::DecoratedWindow::shadedChanged, this, &Decoration::updateButtonsGeometry);
         connect(c, &KDecoration3::DecoratedWindow::nextScaleChanged, this, &Decoration::updateScale);
 
+        connect(c, &KDecoration3::DecoratedWindow::sizeChanged, this, &Decoration::updateBlurRegion);
+        connect(c, &KDecoration3::DecoratedWindow::adjacentScreenEdgesChanged, this, &Decoration::updateBlurRegion);
+        connect(c, &KDecoration3::DecoratedWindow::maximizedChanged, this, &Decoration::updateBlurRegion);
+        connect(c, &KDecoration3::DecoratedWindow::shadedChanged, this, &Decoration::updateBlurRegion);
+        connect(this, &KDecoration3::Decoration::bordersChanged, this, &Decoration::updateBlurRegion);
+        connect(s.get(), &KDecoration3::DecorationSettings::alphaChannelSupportedChanged, this, &Decoration::updateBlurRegion);
+        updateBlurRegion();
+
         createButtons();
         createShadow();
 
@@ -307,6 +316,53 @@ namespace Lightly
         const qreal x = maximized ? 0 : s->largeSpacing()*Metrics::TitleBar_SideMargin;
         const qreal y = maximized ? 0 : s->smallSpacing()*Metrics::TitleBar_TopMargin;
         setTitleBar(QRectF(x, y, width, height));
+    }
+
+    //________________________________________________________________
+    void Decoration::updateBlurRegion()
+    {
+        // KWin requires an explicit region; the old "blur" plugin metadata
+        // does not enable blur with KDecoration3.
+        if( !settings()->isAlphaChannelSupported() )
+        {
+            setBlurRegion(QRegion());
+            return;
+        }
+
+        const auto roundedRegion = [this](const QRectF &rect) {
+            QPainterPath path;
+            path.addRoundedRect(rect, m_internalSettings->cornerRadius(), m_internalSettings->cornerRadius());
+            return QRegion(path.toFillPolygon().toPolygon());
+        };
+
+        const auto c = window();
+        const QRectF titleRect(QPointF(0, 0), QSizeF(size().width(), borderTop()));
+        QRegion region;
+
+        // Match the frame and title bar shapes in paint() and paintTitleBar(),
+        // including their clipping, so blur cannot leak into transparent corners.
+        if( !c->isShaded() )
+        {
+            region = roundedRegion(rect());
+            if( !hideTitleBar() ) region &= QRegion(QRectF(0, borderTop(), size().width(), size().height() - borderTop()).toAlignedRect());
+        }
+
+        if( !hideTitleBar() )
+        {
+            if( isMaximized() ) region += QRegion(titleRect.toAlignedRect());
+            else if( c->isShaded() ) region += roundedRegion(titleRect);
+            else
+            {
+                const qreal radius = m_internalSettings->cornerRadius();
+                const QRectF roundedRect(titleRect.adjusted(isLeftEdge() ? -radius : 0,
+                    isTopEdge() ? -radius : 0, isRightEdge() ? radius : 0, radius));
+                region += roundedRegion(roundedRect) & QRegion(titleRect.toAlignedRect());
+            }
+        }
+
+        // The client requests its own blur through the widget style.
+        if( !c->isShaded() ) region -= QRegion(QRectF(borderLeft(), borderTop(), c->width(), c->height()).toAlignedRect());
+        setBlurRegion(region);
     }
 
     //________________________________________________________________
@@ -384,6 +440,8 @@ namespace Lightly
 
         // borders
         recalculateBorders();
+
+        updateBlurRegion();
 
         // shadow
         createShadow();
