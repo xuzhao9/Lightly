@@ -110,6 +110,7 @@ namespace Lightly
         void updateButtonsGeometry();
         void updateButtonsGeometryDelayed();
         void updateTitleBar();
+        void updateBlurRegion();
         void updateAnimationState();
         void updateSizeGripVisibility();
         void onTabletModeChanged(bool mode);

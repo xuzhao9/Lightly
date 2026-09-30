@@ -219,8 +219,7 @@ namespace Lightly
                         if (mainToolbar.y() == 0 || mainToolbar.y() == menubarHeight) {
                             mainToolbar.setX(0);
                             mainToolbar.setWidth(widget->width());
-                            // TODO: Okular will segfault when blurring the mainToolbar 
-                            // region += mainToolbar;
+                            region += mainToolbar;
                         }
 
                         // round corners if it is at the bottom
