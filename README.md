@@ -79,4 +79,6 @@ sudo make uninstall
 
 ## Acknowledgments
 
+The optional [Adagio lock screen for Plasma 6](misc/lockscreen/Adagio/README.md) is included under `misc/lockscreen/Adagio`. Install it separately with `misc/lockscreen/Adagio/install-lockscreen.sh`; Lightly's CMake build does not install the lock screen.
+
 Breeze authors and Kvantum developer Pedram Pourang.
