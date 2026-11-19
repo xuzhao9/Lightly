@@ -91,6 +91,8 @@ Ubuntu runner.
 Set the repository Actions secrets `OBS_USERNAME` and `OBS_PASSWORD` to the
 credentials of an OBS account with write access to that package before pushing
 a tag. The workflow only runs for tags beginning with `v`.
+To retry an existing tag after a workflow fix, run **Publish to OBS** manually
+from the Actions tab and enter the tag in the `tag` field.
 
 ## Acknowledgments
 

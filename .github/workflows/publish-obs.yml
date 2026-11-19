@@ -4,6 +4,12 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing version tag to publish
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -25,20 +31,25 @@ jobs:
             bash git osc python3 rpm-build tar gzip ca-certificates
 
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
 
       - name: Prepare source archive
         id: source
         shell: bash
+        env:
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
         run: |
-          tag="$GITHUB_REF_NAME"
+          tag="$RELEASE_TAG"
           if [[ ! "$tag" =~ ^v[0-9]+(\.[0-9]+)+(-[A-Za-z0-9.]+)?$ ]]; then
             echo "Expected a version tag such as v0.5.5 or v0.6.0-rc1" >&2
             exit 1
           fi
           version="${tag#v}"
           version="${version/-/~}"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
           echo "version=$version" >> "$GITHUB_OUTPUT"
-          git archive --format=tar.gz \
+          git -c safe.directory="$GITHUB_WORKSPACE" archive --format=tar.gz \
             --prefix="Lightly-$version/" \
             --output="$RUNNER_TEMP/Lightly-$version.tar.gz" HEAD
 
@@ -98,10 +109,12 @@ jobs:
 
       - name: Publish OBS package
         shell: bash
+        env:
+          RELEASE_TAG: ${{ steps.source.outputs.tag }}
         run: |
           config="$RUNNER_TEMP/oscrc"
           cd "$RUNNER_TEMP/obs-lightly"
           osc --config "$config" addremove
           if [[ -n "$(osc --config "$config" status)" ]]; then
-            osc --config "$config" commit -m "Update lightly to $GITHUB_REF_NAME"
+            osc --config "$config" commit -m "Update lightly to $RELEASE_TAG"
           fi
