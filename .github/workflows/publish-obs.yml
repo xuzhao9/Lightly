@@ -1,0 +1,107 @@
+name: Publish to OBS
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: obs-lightly
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    container:
+      image: registry.opensuse.org/opensuse/tumbleweed:latest
+    steps:
+      - name: Install publishing tools
+        run: |
+          zypper --non-interactive --gpg-auto-import-keys refresh
+          zypper --non-interactive install --no-recommends \
+            bash git osc python3 rpm-build tar gzip ca-certificates
+
+      - uses: actions/checkout@v4
+
+      - name: Prepare source archive
+        id: source
+        shell: bash
+        run: |
+          tag="$GITHUB_REF_NAME"
+          if [[ ! "$tag" =~ ^v[0-9]+(\.[0-9]+)+(-[A-Za-z0-9.]+)?$ ]]; then
+            echo "Expected a version tag such as v0.5.5 or v0.6.0-rc1" >&2
+            exit 1
+          fi
+          version="${tag#v}"
+          version="${version/-/~}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          git archive --format=tar.gz \
+            --prefix="Lightly-$version/" \
+            --output="$RUNNER_TEMP/Lightly-$version.tar.gz" HEAD
+
+      - name: Prepare OBS package
+        shell: bash
+        env:
+          OBS_USERNAME: ${{ secrets.OBS_USERNAME }}
+          OBS_PASSWORD: ${{ secrets.OBS_PASSWORD }}
+          VERSION: ${{ steps.source.outputs.version }}
+        run: |
+          : "${OBS_USERNAME:?Set the OBS_USERNAME repository secret}"
+          : "${OBS_PASSWORD:?Set the OBS_PASSWORD repository secret}"
+          umask 077
+          config="$RUNNER_TEMP/oscrc"
+          printf '[general]\napiurl = https://api.opensuse.org\n\n[https://api.opensuse.org]\nuser = %s\npass = %s\n' \
+            "$OBS_USERNAME" "$OBS_PASSWORD" > "$config"
+
+          osc --config "$config" -A https://api.opensuse.org checkout \
+            -o "$RUNNER_TEMP/obs-lightly" home:nuklly lightly
+          cd "$RUNNER_TEMP/obs-lightly"
+
+          python3 - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+
+          spec = Path("lightly.spec")
+          updated, count = re.subn(
+              r"(?m)^Version:[ \t]*[^\r\n]+$",
+              f"Version:        {os.environ['VERSION']}",
+              spec.read_text(),
+          )
+          if count != 1:
+              raise SystemExit("Expected exactly one Version line in lightly.spec")
+          spec.write_text(updated)
+          PY
+
+          for archive in Lightly-*.tar.gz; do
+            if [[ -f "$archive" && "$archive" != "Lightly-$VERSION.tar.gz" ]]; then
+              osc --config "$config" rm "$archive"
+            fi
+          done
+          cp "$RUNNER_TEMP/Lightly-$VERSION.tar.gz" .
+
+      - name: Test RPM build
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP/obs-lightly"
+          rpmspec --query --buildrequires lightly.spec > "$RUNNER_TEMP/buildrequires"
+          mapfile -t build_requires < "$RUNNER_TEMP/buildrequires"
+          zypper --non-interactive install --no-recommends "${build_requires[@]}"
+          mkdir -p "$RUNNER_TEMP/rpmbuild"/{BUILD,BUILDROOT,RPMS,SRPMS,SOURCES,SPECS}
+          rpmbuild \
+            --define "_topdir $RUNNER_TEMP/rpmbuild" \
+            --define "_sourcedir $PWD" \
+            -ba lightly.spec
+
+      - name: Publish OBS package
+        shell: bash
+        run: |
+          config="$RUNNER_TEMP/oscrc"
+          cd "$RUNNER_TEMP/obs-lightly"
+          osc --config "$config" addremove
+          if [[ -n "$(osc --config "$config" status)" ]]; then
+            osc --config "$config" commit -m "Update lightly to $GITHUB_REF_NAME"
+          fi
