@@ -77,6 +77,21 @@ In the build folder:
 sudo make uninstall
 ```
 
+## Publishing to Open Build Service
+
+The [OBS publishing workflow](.github/workflows/publish-obs.yml) updates
+[`home:nuklly/lightly`](https://build.opensuse.org/package/show/home:nuklly/lightly)
+when a version tag such as `v0.5.5` or `v0.6.0-rc1` is pushed. It replaces the
+source tarball, updates the version in `lightly.spec`, and commits the package
+through `osc` after a local RPM build succeeds.
+
+The job runs in the openSUSE Tumbleweed container image on a GitHub-hosted
+Ubuntu runner.
+
+Set the repository Actions secrets `OBS_USERNAME` and `OBS_PASSWORD` to the
+credentials of an OBS account with write access to that package before pushing
+a tag. The workflow only runs for tags beginning with `v`.
+
 ## Acknowledgments
 
 The optional [Adagio lock screen for Plasma 6](misc/lockscreen/Adagio/README.md) is included under `misc/lockscreen/Adagio`. Install it separately with `misc/lockscreen/Adagio/install-lockscreen.sh`; Lightly's CMake build does not install the lock screen.
