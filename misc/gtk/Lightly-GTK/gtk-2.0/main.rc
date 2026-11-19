@@ -11,7 +11,7 @@ style "default" {
   GtkToolbar::internal-padding = 4
   GtkToolButton::icon-spacing = 4
 
-  GtkWidget::tooltip-radius = 2
+  GtkWidget::tooltip-radius = 6
   GtkWidget::tooltip-alpha = 235
   GtkWidget::new-tooltip-style = 1 #for compatibility
 
@@ -108,7 +108,7 @@ style "default" {
       recolorable = TRUE
       state = NORMAL
       shadow = OUT
-      overlay_file = "assets/checkbox-unchecked.png"
+      overlay_file = "assets/lightly-check-off.png"
       overlay_stretch = FALSE
     }
 
@@ -117,7 +117,7 @@ style "default" {
       recolorable = TRUE
       state = PRELIGHT
       shadow = OUT
-      overlay_file = "assets/checkbox-unchecked.png"
+      overlay_file = "assets/lightly-check-off.png"
       overlay_stretch = FALSE
     }
 
@@ -126,7 +126,7 @@ style "default" {
       recolorable = TRUE
       state = ACTIVE
       shadow = OUT
-      overlay_file = "assets/checkbox-unchecked.png"
+      overlay_file = "assets/lightly-check-off.png"
       overlay_stretch = FALSE
     }
 
@@ -135,7 +135,7 @@ style "default" {
       recolorable = TRUE
       state = SELECTED
       shadow = OUT
-      overlay_file = "assets/checkbox-unchecked.png"
+      overlay_file = "assets/lightly-check-off.png"
       overlay_stretch = FALSE
     }
 
@@ -144,7 +144,7 @@ style "default" {
       recolorable = TRUE
       state = INSENSITIVE
       shadow = OUT
-      overlay_file = "assets/checkbox-unchecked-insensitive.png"
+      overlay_file = "assets/lightly-check-off-disabled.png"
       overlay_stretch = FALSE
     }
 
@@ -153,7 +153,7 @@ style "default" {
       recolorable = TRUE
       state = NORMAL
       shadow = IN
-      overlay_file = "assets/checkbox-checked.png"
+      overlay_file = "assets/lightly-check-on.png"
       overlay_stretch = FALSE
     }
 
@@ -162,7 +162,7 @@ style "default" {
       recolorable = TRUE
       state = PRELIGHT
       shadow = IN
-      overlay_file = "assets/checkbox-checked.png"
+      overlay_file = "assets/lightly-check-on.png"
       overlay_stretch = FALSE
     }
 
@@ -171,7 +171,7 @@ style "default" {
       recolorable = TRUE
       state = ACTIVE
       shadow = IN
-      overlay_file = "assets/checkbox-checked.png"
+      overlay_file = "assets/lightly-check-on.png"
       overlay_stretch = FALSE
     }
 
@@ -180,7 +180,7 @@ style "default" {
       recolorable = TRUE
       state = SELECTED
       shadow = IN
-      overlay_file = "assets/checkbox-checked.png"
+      overlay_file = "assets/lightly-check-on.png"
       overlay_stretch = FALSE
     }
 
@@ -189,7 +189,7 @@ style "default" {
       recolorable = TRUE
       state = INSENSITIVE
       shadow = IN
-      overlay_file = "assets/checkbox-checked-insensitive.png"
+      overlay_file = "assets/lightly-check-on-disabled.png"
       overlay_stretch = FALSE
     }
 
@@ -199,7 +199,7 @@ style "default" {
       function = OPTION
       state = NORMAL
       shadow = OUT
-      overlay_file = "assets/radio-unchecked.png"
+      overlay_file = "assets/lightly-radio-off.png"
       overlay_stretch = FALSE
     }
 
@@ -207,7 +207,7 @@ style "default" {
       function = OPTION
       state = PRELIGHT
       shadow = OUT
-      overlay_file = "assets/radio-unchecked.png"
+      overlay_file = "assets/lightly-radio-off.png"
       overlay_stretch = FALSE
     }
 
@@ -215,7 +215,7 @@ style "default" {
       function = OPTION
       state = ACTIVE
       shadow = OUT
-      overlay_file = "assets/radio-unchecked.png"
+      overlay_file = "assets/lightly-radio-off.png"
       overlay_stretch = FALSE
     }
 
@@ -223,7 +223,7 @@ style "default" {
       function = OPTION
       state = SELECTED
       shadow = OUT
-      overlay_file = "assets/radio-unchecked.png"
+      overlay_file = "assets/lightly-radio-off.png"
       overlay_stretch = FALSE
     }
 
@@ -231,7 +231,7 @@ style "default" {
       function = OPTION
       state = INSENSITIVE
       shadow = OUT
-      overlay_file = "assets/radio-unchecked-insensitive.png"
+      overlay_file = "assets/lightly-radio-off-disabled.png"
       overlay_stretch = FALSE
     }
 
@@ -239,7 +239,7 @@ style "default" {
       function = OPTION
       state = NORMAL
       shadow = IN
-      overlay_file = "assets/radio-checked.png"
+      overlay_file = "assets/lightly-radio-on.png"
       overlay_stretch = FALSE
     }
 
@@ -247,7 +247,7 @@ style "default" {
       function = OPTION
       state = PRELIGHT
       shadow = IN
-      overlay_file = "assets/radio-checked.png"
+      overlay_file = "assets/lightly-radio-on.png"
       overlay_stretch = FALSE
     }
 
@@ -255,7 +255,7 @@ style "default" {
       function = OPTION
       state = ACTIVE
       shadow = IN
-      overlay_file = "assets/radio-checked.png"
+      overlay_file = "assets/lightly-radio-on.png"
       overlay_stretch = FALSE
     }
 
@@ -263,7 +263,7 @@ style "default" {
       function = OPTION
       state = SELECTED
       shadow = IN
-      overlay_file = "assets/radio-checked.png"
+      overlay_file = "assets/lightly-radio-on.png"
       overlay_stretch = FALSE
     }
 
@@ -271,7 +271,7 @@ style "default" {
       function = OPTION
       state = INSENSITIVE
       shadow = IN
-      overlay_file = "assets/radio-checked-insensitive.png"
+      overlay_file = "assets/lightly-radio-on-disabled.png"
       overlay_stretch = FALSE
     }
 
@@ -731,8 +731,8 @@ style "menu_item"
     image {
       function = BOX
       state = PRELIGHT
-      file = "assets/menuitem.png"
-      border = { 1, 0, 1, 0 }
+      file = "assets/lightly-menu-hover.png"
+      border = { 3, 3, 3, 3 }
       stretch = TRUE
     }
 
@@ -929,40 +929,40 @@ style "menu_item"
 
 style "button" {
 
-  xthickness = 4
-  ythickness = 4
+  xthickness = 6
+  ythickness = 6
 
   engine "pixmap" {
 
     image {
       function = BOX
       state = NORMAL
-      file = "assets/button.png"
-      border = { 4, 4, 4, 4 }
+      file = "assets/lightly-button.png"
+      border = { 6, 6, 6, 6 }
       stretch = TRUE
     }
 
     image {
       function = BOX
       state = PRELIGHT
-      file = "assets/button-hover.png"
-      border = { 4, 4, 4, 4 }
+      file = "assets/lightly-button-hover.png"
+      border = { 6, 6, 6, 6 }
       stretch = TRUE
     }
 
     image {
       function = BOX
       state = ACTIVE
-      file = "assets/button-active.png"
-      border = { 4, 4, 4, 4 }
+      file = "assets/lightly-button-active.png"
+      border = { 6, 6, 6, 6 }
       stretch = TRUE
     }
 
     image {
       function = BOX
       state = INSENSITIVE
-      file = "assets/button-insensitive.png"
-      border = { 4, 4, 4, 4 }
+      file = "assets/lightly-button-disabled.png"
+      border = { 6, 6, 6, 6 }
       stretch = TRUE
     }
   }
@@ -986,7 +986,7 @@ style "entry" {
       function = SHADOW
       state = NORMAL
       detail = "entry"
-      file = "assets/entry-bg.png"
+      file = "assets/lightly-entry.png"
       border = {6, 6, 6, 6}
       stretch = TRUE
     }
@@ -995,7 +995,7 @@ style "entry" {
       function = SHADOW
       state = ACTIVE
       detail = "entry"
-      file = "assets/entry-active-bg.png"
+      file = "assets/lightly-entry-focus.png"
       border = {6, 6, 6, 6}
       stretch = TRUE
     }
@@ -1004,7 +1004,7 @@ style "entry" {
       function = SHADOW
       state = INSENSITIVE
       detail = "entry"
-      file = "assets/entry-disabled-bg.png"
+      file = "assets/lightly-entry-disabled.png"
       border = {6, 6, 6, 6}
       stretch = TRUE
     }

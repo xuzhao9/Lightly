@@ -27,6 +27,15 @@ With a full glass color scheme (currently full glass color schemes are very bugg
 
 Lightly configuration page can be found in the KDE system settings under the Application style section. 
 
+### GTK 3 theme
+
+The installed `Lightly-GTK` theme includes GTK 2 and GTK 3 light styles matching
+the bundled `colors/Lightly.colors` palette and the Qt style's default 6 px
+corner radius. Select `Lightly-GTK` as the GTK application theme, or preview
+GTK 3 with `GTK_THEME=Lightly-GTK gtk3-widget-factory`. The GTK colors are fixed
+to the bundled light palette; changing the active KDE color scheme or Lightly's
+corner radius does not update them.
+
 
 Most of these options are inherited from Breeze style, but Lightly has a few exclusive options that are enabled by default, including:
 

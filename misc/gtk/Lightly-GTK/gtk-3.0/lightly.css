@@ -1,0 +1,218 @@
+/* Lightly GTK 3 light palette. Keep these values aligned with colors/Lightly.colors. */
+@define-color lightly_window #f0f0f0;
+@define-color lightly_window_text #303030;
+@define-color lightly_view #ffffff;
+@define-color lightly_view_text #000000;
+@define-color lightly_button #fafafa;
+@define-color lightly_button_text #101010;
+@define-color lightly_selection #416294;
+@define-color lightly_selection_text #ffffff;
+@define-color lightly_focus #475a79;
+@define-color lightly_hover #c9e2ff;
+@define-color lightly_link #5276d9;
+@define-color lightly_disabled #707070;
+@define-color lightly_border alpha(#303030, 0.23);
+
+window, dialog, .background, .gtkstyle-fallback {
+  color: @lightly_window_text;
+  background-color: @lightly_window;
+}
+
+.view, iconview, textview text, treeview.view, list, row,
+scrolledwindow viewport, entry, searchentry, spinbutton entry {
+  color: @lightly_view_text;
+  background-color: @lightly_view;
+}
+
+*:selected, .view:selected, treeview.view:selected, row:selected,
+selection, textview text selection {
+  color: @lightly_selection_text;
+  background-color: @lightly_selection;
+}
+
+*:disabled { color: @lightly_disabled; }
+*:link { color: @lightly_link; }
+
+button:not(.flat):not(.titlebutton), combobox button.combo,
+spinbutton button {
+  color: @lightly_button_text;
+  background-color: @lightly_button;
+  background-image: none;
+  border: 1px solid @lightly_border;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px alpha(black, 0.10);
+  padding: 5px 9px;
+}
+
+button:not(.flat):not(.titlebutton):hover, combobox button.combo:hover,
+spinbutton button:hover {
+  background-color: #ffffff;
+  border-color: @lightly_hover;
+  box-shadow: 0 1px 4px alpha(black, 0.16);
+}
+
+button:not(.flat):not(.titlebutton):active,
+button:not(.flat):not(.titlebutton):checked,
+combobox button.combo:active, spinbutton button:active {
+  background-color: #e5ebf2;
+  border-color: @lightly_focus;
+  box-shadow: inset 0 1px 2px alpha(black, 0.12);
+}
+
+button:not(.flat):not(.titlebutton):disabled, combobox button.combo:disabled,
+spinbutton button:disabled {
+  color: @lightly_disabled;
+  background-color: #f5f5f5;
+  border-color: alpha(#303030, 0.12);
+  box-shadow: none;
+}
+
+button.flat, modelbutton.flat, headerbar button.titlebutton {
+  background-color: transparent;
+  background-image: none;
+  border-color: transparent;
+  box-shadow: none;
+  border-radius: 6px;
+}
+
+button.flat:hover, modelbutton.flat:hover, headerbar button.titlebutton:hover {
+  background-color: alpha(@lightly_hover, 0.45);
+}
+
+entry, searchentry, spinbutton entry {
+  border: 1px solid @lightly_border;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 2px alpha(black, 0.06);
+  padding: 5px 8px;
+}
+
+entry:focus, searchentry:focus, spinbutton entry:focus,
+button:focus-visible, combobox button.combo:focus-visible {
+  border-color: @lightly_focus;
+  box-shadow: 0 0 0 2px alpha(@lightly_focus, 0.18);
+}
+
+entry:disabled, searchentry:disabled, spinbutton entry:disabled {
+  color: @lightly_disabled;
+  background-color: #f5f5f5;
+  box-shadow: none;
+}
+
+headerbar, .titlebar:not(headerbar), toolbar, .primary-toolbar,
+menubar, .inline-toolbar {
+  color: @lightly_window_text;
+  background-color: @lightly_window;
+  background-image: none;
+  border-color: alpha(#303030, 0.13);
+  box-shadow: none;
+}
+
+headerbar:backdrop, .titlebar:backdrop:not(headerbar) {
+  color: #606060;
+  background-color: @lightly_window;
+}
+
+menu, popover.background, .context-menu {
+  color: @lightly_window_text;
+  background-color: @lightly_view;
+  background-image: none;
+  border: 1px solid alpha(#303030, 0.16);
+  border-radius: 6px;
+  box-shadow: 0 3px 12px alpha(black, 0.18);
+}
+
+menuitem, modelbutton { border-radius: 6px; }
+menuitem:hover, modelbutton:hover, row:hover {
+  color: @lightly_window_text;
+  background-color: alpha(@lightly_hover, 0.55);
+}
+menuitem:disabled, modelbutton:disabled { color: @lightly_disabled; }
+
+notebook > header { background-color: @lightly_window; }
+notebook > header > tabs > tab {
+  color: @lightly_window_text;
+  background-color: transparent;
+  background-image: none;
+  border-radius: 6px 6px 0 0;
+}
+notebook > header > tabs > tab:hover { background-color: alpha(@lightly_hover, 0.45); }
+notebook > header > tabs > tab:checked {
+  background-color: @lightly_view;
+  box-shadow: inset 0 2px @lightly_selection;
+}
+
+check, radio, treeview.check, treeview.radio {
+  color: @lightly_button_text;
+  background-color: @lightly_view;
+  background-image: none;
+  border: 1px solid @lightly_border;
+  box-shadow: 0 1px 2px alpha(black, 0.10);
+  min-width: 16px;
+  min-height: 16px;
+  -gtk-icon-source: none;
+}
+check, treeview.check { border-radius: 4px; }
+radio, treeview.radio { border-radius: 100%; }
+check:hover, radio:hover, treeview.check:hover, treeview.radio:hover {
+  border-color: @lightly_hover;
+}
+check:checked, radio:checked, check:indeterminate,
+treeview.check:checked, treeview.radio:checked {
+  color: @lightly_selection_text;
+  background-color: @lightly_selection;
+  border-color: @lightly_selection;
+}
+check:checked, treeview.check:checked,
+.view check:checked:selected, row:selected check:checked,
+menuitem check:checked:hover {
+  -gtk-icon-source: url("assets/lightly-check.svg");
+}
+check:indeterminate, treeview.check:indeterminate {
+  -gtk-icon-source: url("assets/lightly-mixed.svg");
+}
+radio:checked, treeview.radio:checked,
+.view radio:checked:selected, row:selected radio:checked,
+menuitem radio:checked:hover {
+  -gtk-icon-source: url("assets/lightly-radio.svg");
+}
+check:disabled, radio:disabled { opacity: 0.5; }
+
+switch {
+  background-color: #b8b8b8;
+  border: 1px solid @lightly_border;
+  border-radius: 100%;
+}
+switch:checked { background-color: @lightly_selection; border-color: @lightly_selection; }
+switch slider {
+  background-color: @lightly_view;
+  border-radius: 100%;
+  box-shadow: 0 1px 3px alpha(black, 0.18);
+}
+switch:disabled { opacity: 0.5; }
+
+scrollbar { background-color: transparent; }
+scrollbar slider {
+  background-color: alpha(@lightly_window_text, 0.38);
+  border: 6px solid transparent;
+  border-radius: 100%;
+  min-width: 8px;
+  min-height: 20px;
+}
+scrollbar slider:hover { background-color: alpha(@lightly_window_text, 0.55); }
+
+scale trough, progressbar trough {
+  background-color: alpha(@lightly_window_text, 0.16);
+  border-radius: 100%;
+}
+scale highlight, progressbar progress {
+  background-color: @lightly_selection;
+  border-radius: 100%;
+}
+scale slider { background-color: @lightly_button; border: 1px solid @lightly_border; }
+
+tooltip, tooltip.background {
+  color: #303030;
+  background-color: #ffffff;
+  border: 1px solid @lightly_border;
+  border-radius: 6px;
+}
